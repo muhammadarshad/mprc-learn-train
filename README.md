@@ -11,7 +11,19 @@ Standalone empirical research repository for observation-populated MPRC learning
 
 ## Empirical dataset
 
-The exact 1,797-sample handwritten-digit dataset used by the experiments is vendored at `data/digits.csv`, with the exact stratified 1,257/540 split at `data/split_seed42.csv`.
+The benchmark uses the canonical scikit-learn `load_digits` dataset: 1,797 handwritten 8x8 digit images.
+
+The exact feature values, labels, and stratified 1,257/540 split are deterministically materialized by:
+
+```bash
+python scripts/materialize_dataset.py
+```
+
+The materializer verifies the canonical payload hash:
+
+`86cddf309a5e475f8b918426113b0312faa5b4830e612a956d3be8859f488270`
+
+and writes `data/digits_seed42.npz`. No network download is required because `load_digits` ships with scikit-learn.
 
 ## Reproduce
 
@@ -63,11 +75,7 @@ These results do **not** claim MPRC beats GD. They show empirical learnability o
 
 ## Source specifications
 
-`docs/Arshads_ViT_Coding_Spec_v1.docx`
-
-`docs/QH4_VOF_Interface_Reconstruction.docx`
-
-These are treated as source specifications. Experiments keep ViT and VOF roles distinct.
+The source specifications are the author's Arshad's ViT v1 coding spec and QH4 VOF interface-reconstruction paper. Their implementation-facing extracts and reference code belong under `docs/`.
 
 ## Provenance
 
