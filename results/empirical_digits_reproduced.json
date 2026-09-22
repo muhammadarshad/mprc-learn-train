@@ -1,0 +1,22 @@
+{
+  "dataset": {"samples": 1797, "train": 1257, "test": 540},
+  "LoG_sigma": 0.8,
+  "scale": 12.261269680719202,
+  "relations_per_image": 176,
+  "mprc_W2_B1": {
+    "accuracy_all": 0.8388888888888889,
+    "accuracy_covered": 0.8404452690166976,
+    "coverage": 0.9981481481481481
+  },
+  "mprc_W2_B1_Sigma": {
+    "accuracy_all": 0.8388888888888889,
+    "accuracy_covered": 0.8388888888888889,
+    "coverage": 1.0
+  },
+  "gd_float_log": 0.9666666666666667,
+  "gd_z256": 0.9648148148148148,
+  "population_seconds": 0.7705240960003721,
+  "W2_cells": 189910,
+  "B1_cells": 33235,
+  "Sigma_cells": 35917
+}
