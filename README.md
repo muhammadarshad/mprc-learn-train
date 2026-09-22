@@ -75,7 +75,7 @@ These results do **not** claim MPRC beats GD. They show empirical learnability o
 
 ## Source specifications
 
-The source specifications are the author's Arshad's ViT v1 coding spec and QH4 VOF interface-reconstruction paper. Their implementation-facing extracts and reference code belong under `docs/`.
+See `docs/SOURCES.md` for the exact source-spec provenance and the deliberately narrow mapping used by these experiments.
 
 ## Provenance
 
