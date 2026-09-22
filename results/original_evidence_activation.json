@@ -1,0 +1,7 @@
+{
+  "w2": {"accuracy_all": 0.6518518518518519, "accuracy_covered": 0.6848249027237354, "coverage": 0.9518518518518518},
+  "b": {"accuracy_all": 0.7944444444444444, "accuracy_covered": 0.7973977695167286, "coverage": 0.9962962962962963},
+  "w2_b_fallback": {"accuracy_all": 0.8, "accuracy_covered": 0.8059701492537313, "coverage": 0.9925925925925926},
+  "w2_plus_b": {"accuracy_all": 0.8037037037037037, "accuracy_covered": 0.8081936685288641, "coverage": 0.9944444444444445},
+  "w2_plus_sigma_plus_b": {"accuracy_all": 0.8277777777777777, "accuracy_covered": 0.8293135435992579, "coverage": 0.9981481481481481}
+}
