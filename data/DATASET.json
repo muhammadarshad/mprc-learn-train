@@ -11,5 +11,7 @@
     "stratified": true
   },
   "upstream_loader": "sklearn.datasets.load_digits",
-  "note": "Exact feature values, labels, and train/test indices used by the experiments are vendored in data/digits_seed42.npz."
+  "materializer": "scripts/materialize_dataset.py",
+  "canonical_payload_sha256": "86cddf309a5e475f8b918426113b0312faa5b4830e612a956d3be8859f488270",
+  "materialized_file": "data/digits_seed42.npz"
 }
