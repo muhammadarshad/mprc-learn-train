@@ -64,7 +64,29 @@ Tests:
 
 The VOF transfer is intentionally narrow: only the integer second-difference primitive is used. The full PLIC/VOF solver is **not** claimed to be a vision classifier.
 
-## Current recorded results
+## Current empirical milestone
+
+The current fixed four-channel QH4 quarter-pair learner uses observation-populated integer LUT scores (no gradient update, no Softmax).
+
+Across five fixed stratified splits:
+
+- MPRC integer LUT: **95.81% mean**, sample std **0.66 percentage points**
+- GD on the exact same QH4 qpair observations: **97.07% mean**, std **0.40 points**
+- GD on the richer raw selected deterministic channels: **98.07% mean**, std **0.28 points**
+
+On the original seed-42 split, the integer MPRC LUT reaches **96.85%** and the same-qpair GD control reaches **96.48%**.
+
+Controls:
+- random-label accuracy: **3.33%**
+- independent pixel-shuffle accuracy: **10.74%**
+- one-pixel translation accuracy: **40.7–48.1%**
+- 90-degree rotation accuracy: **12.59%**
+
+This is not frozen as the final vision learner. The large translation failure is an open architecture problem.
+
+See `scripts/gap_closure_digits.py` and `results/gap_closure_digits.json`.
+
+## Previous recorded results
 
 - MPRC local + stride-7 W²/B¹ evidence: ~83.89% held-out accuracy.
 - ADI-9 + walk-7 + VOF second-difference ablation: ~84.63%.
@@ -72,6 +94,10 @@ The VOF transfer is intentionally narrow: only the integer second-difference pri
 - GD logistic control on float LoG: ~96.67%.
 
 These results do **not** claim MPRC beats GD. They show empirical learnability of observation-populated discrete relation LUTs and quantify the current quality gap.
+
+## Mathematical freeze
+
+Empirical work is constrained by the five-paper Sunday RC2 freeze in `docs/SUNDAY_FREEZE_RC2.md`.
 
 ## Source specifications
 
