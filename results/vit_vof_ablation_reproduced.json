@@ -1,0 +1,25 @@
+{
+  "dataset": {"samples": 1797, "train": 1257, "test": 540},
+  "LoG_sigma": 0.8,
+  "scale": 12.261269680719202,
+  "feature_widths": {
+    "pixel_control": 64,
+    "adi9": 324,
+    "walk7": 64,
+    "vof_d2": 72,
+    "s5": 36
+  },
+  "results": {
+    "pixel_control": {"accuracy_all": 0.762962962962963, "accuracy_covered": 0.7700934579439253, "coverage": 0.9907407407407407},
+    "adi9": {"accuracy_all": 0.8185185185185185, "accuracy_covered": 0.8215613382899628, "coverage": 0.9962962962962963},
+    "walk7": {"accuracy_all": 0.7407407407407407, "accuracy_covered": 0.7561436672967864, "coverage": 0.9796296296296296},
+    "vof_d2": {"accuracy_all": 0.6240740740740741, "accuracy_covered": 0.6518375241779497, "coverage": 0.9574074074074074},
+    "s5": {"accuracy_all": 0.3, "accuracy_covered": 0.3468950749464668, "coverage": 0.8648148148148148},
+    "adi9_walk7": {"accuracy_all": 0.837037037037037, "accuracy_covered": 0.8401486988847584, "coverage": 0.9962962962962963},
+    "adi9_vof": {"accuracy_all": 0.825925925925926, "accuracy_covered": 0.8274582560296846, "coverage": 0.9981481481481481},
+    "adi9_s5": {"accuracy_all": 0.8240740740740741, "accuracy_covered": 0.8286778398510242, "coverage": 0.9944444444444445},
+    "adi9_walk7_vof": {"accuracy_all": 0.8462962962962963, "accuracy_covered": 0.8478664192949907, "coverage": 0.9981481481481481},
+    "adi9_walk7_vof_s5": {"accuracy_all": 0.8425925925925926, "accuracy_covered": 0.8441558441558441, "coverage": 0.9981481481481481}
+  },
+  "best": "adi9_walk7_vof"
+}
