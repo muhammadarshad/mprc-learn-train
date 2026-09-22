@@ -1,0 +1,70 @@
+{
+  "architecture": {
+    "channels": [
+      "gy",
+      "grad",
+      "h2",
+      "m4"
+    ],
+    "qpair_edges": 274,
+    "alpha": 0.05,
+    "integer_score_scale": 1
+  },
+  "repeated_splits": [
+    {
+      "seed": 7,
+      "mprc_integer_lut": 0.9574074074074074,
+      "gd_raw_channels": 0.9814814814814815,
+      "gd_qpair_onehot": 0.9722222222222222
+    },
+    {
+      "seed": 19,
+      "mprc_integer_lut": 0.95,
+      "gd_raw_channels": 0.9851851851851852,
+      "gd_qpair_onehot": 0.9685185185185186
+    },
+    {
+      "seed": 42,
+      "mprc_integer_lut": 0.9685185185185186,
+      "gd_raw_channels": 0.9796296296296296,
+      "gd_qpair_onehot": 0.9648148148148148
+    },
+    {
+      "seed": 71,
+      "mprc_integer_lut": 0.9574074074074074,
+      "gd_raw_channels": 0.9796296296296296,
+      "gd_qpair_onehot": 0.9740740740740741
+    },
+    {
+      "seed": 113,
+      "mprc_integer_lut": 0.9574074074074074,
+      "gd_raw_channels": 0.9777777777777777,
+      "gd_qpair_onehot": 0.9740740740740741
+    }
+  ],
+  "summary": {
+    "mprc_integer_lut": {
+      "mean": 0.9581481481481481,
+      "sample_std": 0.006625386599999408
+    },
+    "gd_raw_channels": {
+      "mean": 0.9807407407407407,
+      "sample_std": 0.0028084723866857618
+    },
+    "gd_qpair_onehot": {
+      "mean": 0.9707407407407407,
+      "sample_std": 0.0040147191460516395
+    }
+  },
+  "controls": {
+    "random_label_accuracy": 0.03333333333333333,
+    "pixel_shuffle_accuracy": 0.10740740740740741,
+    "translation_test_accuracy": {
+      "1,0": 0.48148148148148145,
+      "-1,0": 0.4074074074074074,
+      "0,1": 0.4388888888888889,
+      "0,-1": 0.4666666666666667
+    },
+    "rotation90_test_accuracy": 0.1259259259259259
+  }
+}
