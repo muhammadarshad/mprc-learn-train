@@ -1,0 +1,24 @@
+name: CIFAR10 native32 transport
+
+on:
+  push:
+    paths:
+      - "scripts/cifar10_native32.py"
+      - ".github/workflows/cifar10_native32.yml"
+  workflow_dispatch:
+
+jobs:
+  cifar10:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install numpy
+      - run: python scripts/cifar10_native32.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cifar10-native32-result
+          path: results/cifar10_native32_transport.json
