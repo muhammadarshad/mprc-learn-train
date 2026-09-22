@@ -1,0 +1,5 @@
+{
+  "hv": {"b": {"accuracy_all": 0.7944444444444444}, "w_b": {"accuracy_all": 0.8037037037037037}, "all": {"accuracy_all": 0.8277777777777777}},
+  "stride7": {"b": {"accuracy_all": 0.7407407407407407}, "w_b": {"accuracy_all": 0.7592592592592593}, "all": {"accuracy_all": 0.8}},
+  "hv_plus_stride7": {"b": {"accuracy_all": 0.8296296296296296}, "w_b": {"accuracy_all": 0.8388888888888889}, "all": {"accuracy_all": 0.8388888888888889}}
+}
