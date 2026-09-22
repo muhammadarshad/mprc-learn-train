@@ -1,0 +1,28 @@
+{
+  "exact_gates": {
+    "active_states": 252,
+    "vacua": [
+      0,
+      64,
+      128,
+      192
+    ],
+    "D3_transform_count": 6,
+    "active_orbit_histogram": {
+      "3": 252
+    },
+    "canonical_active_classes": 84
+  },
+  "transpose_validation": {
+    "raw": 0.9682539682539683,
+    "canonical": 0.8253968253968254,
+    "augmented_raw_inference": 0.8690476190476191,
+    "augmented_orbit_inference": 0.8571428571428571
+  },
+  "generator_validation": {
+    "pair124": 0.7261904761904762,
+    "raw_plus_pair124": 0.9682539682539683,
+    "triple124": 0.7579365079365079,
+    "raw_plus_triple124": 0.9642857142857143
+  }
+}
