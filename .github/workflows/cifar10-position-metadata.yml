@@ -1,0 +1,26 @@
+name: CIFAR10 Position Metadata Codec
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/cifar10_position_metadata.py'
+      - '.github/workflows/cifar10-position-metadata.yml'
+  workflow_dispatch:
+
+jobs:
+  cifar10-position-metadata:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy
+      - run: python scripts/cifar10_position_metadata.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cifar10-position-metadata-result
+          path: results/cifar10_position_metadata.json
+          retention-days: 90
