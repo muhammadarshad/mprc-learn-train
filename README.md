@@ -106,3 +106,8 @@ See `docs/SOURCES.md` for the exact source-spec provenance and the deliberately 
 ## Provenance
 
 This repository is the authoritative upstream research home. A downstream snapshot/subtree may later be vendored into `muhammadarshad/mprc-fft`.
+
+
+## License
+
+Source-available for non-commercial research and evaluation under the terms in `LICENSE`, incorporating the PolyForm Noncommercial License 1.0.0. Commercial use requires a separate written license from the copyright holder. This repository is not released under an OSI-approved open-source license.
