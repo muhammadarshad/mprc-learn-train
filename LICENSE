@@ -1,0 +1,54 @@
+MPRC Research Source License
+Commercial Rights Reserved
+
+Copyright (c) 2026 Muhammad Arshad.
+All rights not expressly granted below are reserved.
+
+This repository is made available under the PolyForm Noncommercial License 1.0.0:
+
+https://polyformproject.org/licenses/noncommercial/1.0.0
+
+Required Notice: Copyright 2026 Muhammad Arshad. MPRC research source and associated implementations are provided for non-commercial research, study, experimentation, verification, and evaluation only.
+
+COMMERCIAL USE
+
+No commercial rights are granted by this repository except through a separate written commercial license from the copyright holder.
+
+Without such a separate written license, you may not use this software, source code, algorithms, implementations, datasets, learned tables, model artifacts, documentation, or substantial derivatives for any purpose primarily intended for commercial advantage or monetary compensation, including:
+
+- production deployment in a commercial product or service;
+- paid SaaS, hosted API, cloud service, or managed service;
+- resale, sublicensing, paid distribution, or OEM/embedded distribution;
+- paid consulting or commercial customer delivery;
+- incorporation into proprietary commercial software or hardware;
+- training, fine-tuning, or deriving a commercial model, product, or service from this repository or substantial portions of it.
+
+NON-COMMERCIAL RESEARCH
+
+Subject to the PolyForm Noncommercial License 1.0.0, non-commercial research, personal study, academic evaluation, reproducibility work, benchmarking, experimentation, modification, and GitHub collaboration are permitted.
+
+ATTRIBUTION AND NOTICES
+
+Any permitted copy or distribution must preserve this LICENSE file, the PolyForm Noncommercial License reference above, all copyright notices, authorship/provenance notices, and any "Required Notice:" lines provided with the software.
+
+NO TRADEMARK LICENSE
+
+No permission is granted to use the names "MPRC", "Arshad's ViT", the author's name, project branding, or logos as trademarks, service marks, endorsements, or source identifiers except for truthful attribution.
+
+NO IMPLIED COMMERCIAL OR PATENT RIGHTS
+
+Except for patent rights expressly granted by the incorporated PolyForm Noncommercial License for permitted non-commercial purposes, no commercial patent license, production license, trademark license, or other commercial right is granted.
+
+SEPARATE COMMERCIAL LICENSING
+
+Commercial licensing, production use, OEM use, hosted-service use, and other rights outside the non-commercial license may be negotiated separately with the repository owner.
+
+PUBLIC SOURCE DOES NOT MEAN PUBLIC DOMAIN
+
+Publication of the source code does not dedicate the work to the public domain and does not waive copyright, patent, trademark, or other intellectual-property rights.
+
+NO WARRANTY
+
+The software and research materials are provided subject to the warranty and liability terms of the PolyForm Noncommercial License 1.0.0.
+
+For avoidance of doubt: this repository is source-available, not OSI-approved open-source software.
