@@ -1,0 +1,40 @@
+{
+  "dataset": {
+    "name": "CIFAR-10",
+    "official_train": 50000,
+    "official_test": 10000,
+    "shape": [32, 32, 3],
+    "archive_md5": "c58f30108f718f92721af3b95e74349a"
+  },
+  "controlled_change": "retain block-local qpair position instead of 16-bin histogram",
+  "frozen_geometry": {
+    "orientations": {"phase_7x16": "7x16", "phase_16x7": "16x7"},
+    "padding": 0,
+    "partial_structures_explicit": true,
+    "blocks_per_phase": 10
+  },
+  "channels": ["R", "G", "B", "Y", "GY", "GRAD"],
+  "feature_width_per_channel_per_phase": 3444,
+  "accuracy": {
+    "phase_7x16_only": 0.3207,
+    "phase_16x7_only": 0.3223,
+    "combined": 0.3227
+  },
+  "comparison": {
+    "histogram_baseline_combined": 0.3987,
+    "absolute_change": -0.0760
+  },
+  "integer_lut": {
+    "alpha": 0.05,
+    "score_scale": 1,
+    "table_dtype": "int16",
+    "table_cells": 6612480,
+    "learned_table_bytes": 13224960
+  },
+  "workflow": {
+    "run_id": 35801655370,
+    "artifact_id": 10726297899,
+    "artifact_sha256": "bf3cb7a8f7df5f6e8a8216ff8d73c4018bacb5c5e0ac7c45e4bc6fd97787a65f"
+  },
+  "status": "EMPIRICAL FALSIFICATION: absolute classifier-position retention does not solve transport. Position should be tested in the structural metadata path."
+}
