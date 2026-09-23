@@ -1,0 +1,26 @@
+name: CIFAR10 Paper1 Active Byte Codec
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/cifar10_paper1_active_codec.py'
+      - '.github/workflows/cifar10-paper1-codec.yml'
+  workflow_dispatch:
+
+jobs:
+  cifar10-paper1-codec:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy
+      - run: python scripts/cifar10_paper1_active_codec.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cifar10-paper1-active-byte-codec
+          path: results/cifar10_paper1_active_byte_codec.json
+          retention-days: 90
