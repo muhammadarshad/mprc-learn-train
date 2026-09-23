@@ -1,0 +1,26 @@
+name: MPRC Vision CIFAR geometry AB
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/mprc_vision_cifar_geometry_ab.py'
+      - '.github/workflows/mprc-vision-cifar-geometry-ab.yml'
+  workflow_dispatch:
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy
+      - run: python scripts/mprc_vision_cifar_geometry_ab.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mprc-vision-cifar-geometry-ab-result
+          path: results/mprc_vision_cifar_geometry_ab.json
+          retention-days: 90
