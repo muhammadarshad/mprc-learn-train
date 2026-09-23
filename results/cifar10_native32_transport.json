@@ -1,0 +1,36 @@
+{
+  "dataset": {
+    "name": "CIFAR-10",
+    "official_train": 50000,
+    "official_test": 10000,
+    "shape": [32, 32, 3],
+    "archive_md5": "c58f30108f718f92721af3b95e74349a"
+  },
+  "frozen_geometry": {
+    "orientations": {"H": "7x16", "V": "16x7"},
+    "padding": 0,
+    "partial_structures_explicit": true,
+    "H_blocks": 10,
+    "V_blocks": 10,
+    "H_partials": [[28, 32, 0, 16], [28, 32, 16, 32]],
+    "V_partials": [[0, 16, 28, 32], [16, 32, 28, 32]]
+  },
+  "channels": ["R", "G", "B", "Y", "GY", "GRAD"],
+  "feature_widths": {
+    "R:H": 640, "R:V": 640,
+    "G:H": 640, "G:V": 640,
+    "B:H": 640, "B:V": 640,
+    "Y:H": 640, "Y:V": 640,
+    "GY:H": 640, "GY:V": 640,
+    "GRAD:H": 640, "GRAD:V": 640
+  },
+  "accuracy": {
+    "H_only": 0.3976,
+    "V_only": 0.3839,
+    "H_plus_V": 0.3987
+  },
+  "learned_table_bytes_float32": 32563200,
+  "workflow_run_id": 35799023379,
+  "workflow_artifact_sha256": "99b021759f067a489a1db919eade952e0653eb71df4cc00189ad55e98a8f61ee",
+  "note": "Layer-D rectangular transport diagnostic; not full Arshad-ViT B5. This run histogram-pooled every relation field and therefore intentionally serves as the lossy baseline for the position-preserving follow-up."
+}
