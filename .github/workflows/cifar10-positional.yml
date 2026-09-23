@@ -1,0 +1,26 @@
+name: CIFAR10 Native32 Positional Transport
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/cifar10_native32_positional.py'
+      - '.github/workflows/cifar10-positional.yml'
+  workflow_dispatch:
+
+jobs:
+  cifar10-positional:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy
+      - run: python scripts/cifar10_native32_positional.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cifar10-native32-positional-result
+          path: results/cifar10_native32_positional.json
+          retention-days: 90
