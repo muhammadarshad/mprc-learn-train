@@ -1,0 +1,26 @@
+name: CIFAR10 Cubic Active Codec
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/cifar10_cubic_active_codec.py'
+      - '.github/workflows/cifar10-cubic-codec.yml'
+  workflow_dispatch:
+
+jobs:
+  cubic-codec:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy
+      - run: python scripts/cifar10_cubic_active_codec.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cifar10-cubic-active-codec-result
+          path: results/cifar10_cubic_active_codec.json
+          retention-days: 90
