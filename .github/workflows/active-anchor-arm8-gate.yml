@@ -1,0 +1,25 @@
+name: Active Anchor Arm8 serialization gate
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/active_anchor_arm8_serialization_gate.py'
+      - '.github/workflows/active-anchor-arm8-gate.yml'
+  workflow_dispatch:
+
+jobs:
+  prove-and-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/active_anchor_arm8_serialization_gate.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: active-anchor-arm8-serialization-gate
+          path: results/active_anchor_arm8_serialization_gate.json
+          retention-days: 90
