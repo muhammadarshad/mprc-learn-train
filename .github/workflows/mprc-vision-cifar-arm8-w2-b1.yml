@@ -1,0 +1,37 @@
+name: MPRC Vision CIFAR directional Arm8 W2 B1
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/mprc_vision_cifar_directional_arm8_w2_b1.py'
+      - 'scripts/directional_arm8_w2_survival_gate.py'
+      - '.github/workflows/mprc-vision-cifar-arm8-w2-b1.yml'
+  workflow_dispatch:
+
+jobs:
+  gate-then-train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: PRE-TRAINING ARM8 W2 MATH/CODE GATE
+        run: python scripts/directional_arm8_w2_survival_gate.py
+
+      - name: Install training dependency
+        run: pip install numpy
+
+      - name: TRAIN ONLY AFTER GATE PASS
+        run: python scripts/mprc_vision_cifar_directional_arm8_w2_b1.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mprc-vision-cifar-directional-arm8-w2-b1-result
+          path: |
+            results/directional_arm8_w2_survival_gate.json
+            results/mprc_vision_cifar_directional_arm8_w2_b1.json
+          retention-days: 90
