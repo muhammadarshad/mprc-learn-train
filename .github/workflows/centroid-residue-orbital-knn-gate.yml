@@ -1,0 +1,25 @@
+name: Centroid Residue Orbital KNN gate
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/centroid_residue_orbital_knn_gate.py'
+      - '.github/workflows/centroid-residue-orbital-knn-gate.yml'
+  workflow_dispatch:
+
+jobs:
+  prove-and-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python scripts/centroid_residue_orbital_knn_gate.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: centroid-residue-orbital-knn-gate
+          path: results/centroid_residue_orbital_knn_gate.json
+          retention-days: 90
