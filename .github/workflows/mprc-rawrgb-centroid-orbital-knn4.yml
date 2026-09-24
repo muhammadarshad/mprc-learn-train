@@ -1,0 +1,37 @@
+name: MPRC Raw RGB Centroid Orbital KNN4
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/mprc_rawrgb_centroid_orbital_knn4.py'
+      - 'scripts/centroid_residue_orbital_knn_gate.py'
+      - '.github/workflows/mprc-rawrgb-centroid-orbital-knn4.yml'
+  workflow_dispatch:
+
+jobs:
+  gate-then-train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: PRE-TRAINING CENTROID ORBITAL KNN GATE
+        run: python scripts/centroid_residue_orbital_knn_gate.py
+
+      - name: Install runtime dependency
+        run: pip install numpy
+
+      - name: TRAIN CENTERS AND ARRANGE K=4 NEIGHBORS
+        run: python scripts/mprc_rawrgb_centroid_orbital_knn4.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mprc-rawrgb-centroid-orbital-knn4-result
+          path: |
+            results/centroid_residue_orbital_knn_gate.json
+            results/mprc_rawrgb_centroid_orbital_knn4.json
+          retention-days: 90
