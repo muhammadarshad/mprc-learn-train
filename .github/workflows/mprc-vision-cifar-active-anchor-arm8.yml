@@ -1,0 +1,47 @@
+name: MPRC Vision CIFAR active anchor Arm8
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/mprc_vision_cifar_active_anchor_arm8.py'
+      - 'scripts/directional_arm8_w2_survival_gate.py'
+      - 'scripts/global_local_displacement_survival_gate.py'
+      - 'scripts/active_anchor_arm8_serialization_gate.py'
+      - '.github/workflows/mprc-vision-cifar-active-anchor-arm8.yml'
+  workflow_dispatch:
+
+jobs:
+  gate-then-train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Gate 1 - directional Arm8 W2
+        run: python scripts/directional_arm8_w2_survival_gate.py
+
+      - name: Gate 2 - global/local displacement
+        run: python scripts/global_local_displacement_survival_gate.py
+
+      - name: Gate 3 - active-anchor serialization
+        run: python scripts/active_anchor_arm8_serialization_gate.py
+
+      - name: Install training dependency
+        run: pip install numpy
+
+      - name: TRAIN ONLY AFTER ALL GATES PASS
+        run: python scripts/mprc_vision_cifar_active_anchor_arm8.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mprc-vision-cifar-active-anchor-arm8-result
+          path: |
+            results/directional_arm8_w2_survival_gate.json
+            results/global_local_displacement_survival_gate.json
+            results/active_anchor_arm8_serialization_gate.json
+            results/mprc_vision_cifar_active_anchor_arm8.json
+          retention-days: 90
