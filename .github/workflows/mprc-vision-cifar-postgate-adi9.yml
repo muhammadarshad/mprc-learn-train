@@ -1,0 +1,37 @@
+name: MPRC Vision CIFAR post-gate ADI9
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/mprc_vision_cifar_postgate_adi9.py'
+      - 'scripts/directional_adi9_survival_gate.py'
+      - '.github/workflows/mprc-vision-cifar-postgate-adi9.yml'
+  workflow_dispatch:
+
+jobs:
+  gate-then-train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: PRE-TRAINING MATH/CODE SURVIVAL GATE
+        run: python scripts/directional_adi9_survival_gate.py
+
+      - name: Install training dependency
+        run: pip install numpy
+
+      - name: TRAIN ONLY AFTER GATE PASS
+        run: python scripts/mprc_vision_cifar_postgate_adi9.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mprc-vision-cifar-postgate-adi9-result
+          path: |
+            results/directional_adi9_survival_gate.json
+            results/mprc_vision_cifar_postgate_adi9.json
+          retention-days: 90
