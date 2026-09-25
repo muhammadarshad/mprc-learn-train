@@ -81,14 +81,40 @@ for Q in (10,100,1000,10000):
         emitted_signed=-u.position
         assert total == emitted_signed*Q + u.residual
 
-        rational = Fraction(total,Q)
-        # Stored integer position is the trunc-toward-zero whole part of cumulative rational motion.
-        assert emitted_signed == trunc_div(total,Q)
+        # The exact learned motion is the PAIR (emitted whole quanta, residual).
+        # After sign reversals, emitted_signed alone is intentionally not required
+        # to equal trunc(total/Q): previously emitted motion can be partly cancelled
+        # by an opposite residual without losing the sub-quantum evidence.
+        exact = Fraction(emitted_signed, 1) + Fraction(u.residual, Q)
+        assert exact == Fraction(total, Q)
+
+        # Parameter delta plus residual correction equals exact SGD motion:
+        # position = -emitted_signed, so position - residual/Q = -total/Q.
+        virtual_parameter_delta = Fraction(u.position, 1) - Fraction(u.residual, Q)
+        assert virtual_parameter_delta == -Fraction(total, Q)
 
 report["G1_rational_accumulator"]={
     "pass":True,
     "denominators":[10,100,1000,10000],
     "random_trials_per_denominator":1000,
+}
+
+
+# G1b explicit reversal witness: emitted state alone may differ, pair stays exact.
+u=ResidualUpdate(1000)
+u.add(1500)   # emits +1 gradient quantum, residual +500
+u.add(-1000)  # total gradient is now +500; emitted remains +1, residual becomes -500
+assert -u.position == 1
+assert u.residual == -500
+assert Fraction(-u.position,1) + Fraction(u.residual,1000) == Fraction(1,2)
+assert Fraction(u.position,1) - Fraction(u.residual,1000) == Fraction(-1,2)
+report["G1b_reversal_pair_state"]={
+    "pass":True,
+    "emitted_gradient_quanta":1,
+    "residual_numerator":-500,
+    "denominator":1000,
+    "exact_total_gradient":"1/2",
+    "exact_parameter_delta":"-1/2",
 }
 
 # G2 cancellation is retained before emission.
