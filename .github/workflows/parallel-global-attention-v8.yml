@@ -1,0 +1,27 @@
+name: Parallel Global Attention Residual v8
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/parallel_global_attention_residual_v8.py'
+      - '.github/workflows/parallel-global-attention-v8.yml'
+  workflow_dispatch:
+
+jobs:
+  parallel-attention:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -e .
+      - name: Run frozen-local parallel Global Attention probe
+        run: python scripts/parallel_global_attention_residual_v8.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: parallel-global-attention-v8
+          path: results/parallel_global_attention_residual_v8.json
+          retention-days: 90
