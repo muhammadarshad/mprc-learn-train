@@ -1,0 +1,27 @@
+name: Generator Displacement Attention v13
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/generator_displacement_attention_v13.py'
+      - '.github/workflows/generator-displacement-v13.yml'
+  workflow_dispatch:
+
+jobs:
+  displacement:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -e .
+      - name: Run generator-displacement attention benchmark
+        run: python scripts/generator_displacement_attention_v13.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: generator-displacement-v13
+          path: results/generator_displacement_attention_v13.json
+          retention-days: 90
