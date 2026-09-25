@@ -1,0 +1,27 @@
+name: Retrieval Policy Ablation v11
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/retrieval_policy_ablation_v11.py'
+      - '.github/workflows/retrieval-policy-v11.yml'
+  workflow_dispatch:
+
+jobs:
+  policy-ablation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -e .
+      - name: Run leakage-free retrieval policy ablation
+        run: python scripts/retrieval_policy_ablation_v11.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: retrieval-policy-v11
+          path: results/retrieval_policy_ablation_v11.json
+          retention-days: 90
