@@ -1,0 +1,27 @@
+name: Attention Second Opinion v9
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/attention_second_opinion_v9.py'
+      - '.github/workflows/attention-second-opinion-v9.yml'
+  workflow_dispatch:
+
+jobs:
+  second-opinion:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -e .
+      - name: Run leakage-free attention complementarity probe
+        run: python scripts/attention_second_opinion_v9.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: attention-second-opinion-v9
+          path: results/attention_second_opinion_v9.json
+          retention-days: 90
