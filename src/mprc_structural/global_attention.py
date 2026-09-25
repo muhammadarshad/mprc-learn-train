@@ -175,6 +175,23 @@ class GeneratorPrefixPolicy:
         return [((q + GEN * t) & 0xFF) for t in range(K)]
 
 
+
+
+@dataclass(frozen=True)
+class Relation16TransposePolicy:
+    """Retrieve an ordered 16x16 local relation and its reversed orientation.
+
+    Local state p encodes (i,j) as p=16*i+j.  Arshad local transpose is
+    tau(p)=16*j+i.  Diagonal relations retrieve one state; off-diagonal
+    relations retrieve the exact two-state transpose orbit.
+    """
+
+    def states(self, query_local_state: int) -> list[int]:
+        p = int(query_local_state) & 0xFF
+        i, j = divmod(p, 16)
+        q = 16 * j + i
+        return [p] if q == p else [p, q]
+
 @dataclass(frozen=True)
 class ExplicitRelationPolicy:
     related_states: tuple[int, ...]
