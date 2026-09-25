@@ -1,0 +1,42 @@
+name: Pure Integer Training v0
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/integer_learning_rate_gate.py'
+      - 'scripts/pure_integer_training_v0.py'
+      - 'scripts/global_attention_probe.py'
+      - '.github/workflows/pure-integer-training-v0.yml'
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install package
+        run: pip install -e .
+
+      - name: Gate rational integer learning rate
+        run: python scripts/integer_learning_rate_gate.py
+
+      - name: Re-run Global Attention probe
+        run: python scripts/global_attention_probe.py
+
+      - name: Train pure integer network
+        run: python scripts/pure_integer_training_v0.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pure-integer-training-v0
+          path: |
+            results/integer_learning_rate_gate.json
+            results/global_attention_probe.json
+            results/pure_integer_training_v0.json
+          retention-days: 90
