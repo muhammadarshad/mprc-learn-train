@@ -1,0 +1,27 @@
+name: Position-Aware Global Occurrence Attention v12
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/position_aware_global_occurrence_attention_v12.py'
+      - '.github/workflows/position-aware-attention-v12.yml'
+  workflow_dispatch:
+
+jobs:
+  position-aware:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -e .
+      - name: Run position-aware global occurrence attention
+        run: python scripts/position_aware_global_occurrence_attention_v12.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: position-aware-attention-v12
+          path: results/position_aware_global_occurrence_attention_v12.json
+          retention-days: 90
