@@ -1,0 +1,43 @@
+name: Batched GA Relation16 Decision Probe
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'src/mprc_structural/global_attention.py'
+      - 'scripts/local_global_transpose_survival_gate.py'
+      - 'scripts/local_relation16_transpose_gate.py'
+      - 'scripts/global_attention_relation16_ab.py'
+      - '.github/workflows/ga-relation16-decision.yml'
+  workflow_dispatch:
+
+jobs:
+  decision:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install runtime
+        run: pip install -e .
+
+      - name: Gate 1 - local/global transpose
+        run: python scripts/local_global_transpose_survival_gate.py
+
+      - name: Gate 2 - 16x16 local transpose
+        run: python scripts/local_relation16_transpose_gate.py
+
+      - name: Decision probe - exact vs transpose pair
+        run: python scripts/global_attention_relation16_ab.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ga-relation16-decision
+          path: |
+            results/local_global_transpose_survival_gate.json
+            results/local_relation16_transpose_gate.json
+            results/global_attention_relation16_ab.json
+          retention-days: 90
