@@ -1,0 +1,27 @@
+name: Ring MEASURE Directional Prototypes v5
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/ring_measure_directional_prototypes_v5.py'
+      - '.github/workflows/ring-measure-directional-prototypes-v5.yml'
+  workflow_dispatch:
+
+jobs:
+  measure-learning:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -e .
+      - name: Run ring-native MEASURE prototype learner
+        run: python scripts/ring_measure_directional_prototypes_v5.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ring-measure-directional-prototypes-v5
+          path: results/ring_measure_directional_prototypes_v5.json
+          retention-days: 90
