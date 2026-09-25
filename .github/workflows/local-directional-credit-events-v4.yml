@@ -1,0 +1,27 @@
+name: Local Directional Credit Events v4
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/local_directional_credit_events_v4.py'
+      - '.github/workflows/local-directional-credit-events-v4.yml'
+  workflow_dispatch:
+
+jobs:
+  local-events:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -e .
+      - name: Run local directional credit-event learner
+        run: python scripts/local_directional_credit_events_v4.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: local-directional-credit-events-v4
+          path: results/local_directional_credit_events_v4.json
+          retention-days: 90
