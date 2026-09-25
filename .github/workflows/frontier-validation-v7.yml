@@ -1,0 +1,27 @@
+name: Frontier Validation Scalar vs D4 v7
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/frontier_validation_scalar_vs_D4_v7.py'
+      - '.github/workflows/frontier-validation-v7.yml'
+  workflow_dispatch:
+
+jobs:
+  frontier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -e .
+      - name: Run leakage-free paired frontier validation
+        run: python scripts/frontier_validation_scalar_vs_D4_v7.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: frontier-validation-v7
+          path: results/frontier_validation_scalar_vs_D4_v7.json
+          retention-days: 90
