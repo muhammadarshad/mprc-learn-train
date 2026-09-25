@@ -1,6 +1,11 @@
 name: Directional Event Learning v3
 
 on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/directional_event_learning_v3.py'
+      - '.github/workflows/directional-event-learning-v3.yml'
   workflow_run:
     workflows: ["Scalar vs Directional4 Learning v2"]
     types: [completed]
@@ -8,7 +13,7 @@ on:
 
 jobs:
   event-learning:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
