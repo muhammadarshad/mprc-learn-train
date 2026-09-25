@@ -1,0 +1,47 @@
+name: Pure Integer Training v1-A GA
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/integer_learning_rate_gate.py'
+      - 'scripts/local_global_transpose_survival_gate.py'
+      - 'scripts/local_relation16_transpose_gate.py'
+      - 'scripts/pure_integer_training_v1a_ga.py'
+      - '.github/workflows/pure-integer-training-v1a-ga.yml'
+  workflow_dispatch:
+
+jobs:
+  v1a:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install package
+        run: pip install -e .
+
+      - name: Gate rational integer learning
+        run: python scripts/integer_learning_rate_gate.py
+
+      - name: Gate local-global transpose
+        run: python scripts/local_global_transpose_survival_gate.py
+
+      - name: Gate Relation16 transpose
+        run: python scripts/local_relation16_transpose_gate.py
+
+      - name: Train A0 vs integrated GA A1
+        run: python scripts/pure_integer_training_v1a_ga.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: pure-integer-training-v1a-ga
+          path: |
+            results/integer_learning_rate_gate.json
+            results/local_global_transpose_survival_gate.json
+            results/local_relation16_transpose_gate.json
+            results/pure_integer_training_v1a_ga.json
+          retention-days: 90
