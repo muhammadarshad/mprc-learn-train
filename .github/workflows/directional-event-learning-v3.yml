@@ -1,0 +1,28 @@
+name: Directional Event Learning v3
+
+on:
+  workflow_run:
+    workflows: ["Scalar vs Directional4 Learning v2"]
+    types: [completed]
+  workflow_dispatch:
+
+jobs:
+  event-learning:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -e .
+      - name: Run directional event-count learner
+        run: python scripts/directional_event_learning_v3.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: directional-event-learning-v3
+          path: results/directional_event_learning_v3.json
+          retention-days: 90
