@@ -21,9 +21,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: pip install -e .
+      - name: Install package and test runner
+        run: pip install -e . pytest
       - name: Corrected manifold and attention tests
-        run: pytest -q tests/test_manifold_layout.py tests/test_manifold_data_information.py tests/test_corrected_attention.py
+        run: python -m pytest -q tests/test_manifold_layout.py tests/test_manifold_data_information.py tests/test_corrected_attention.py
       - name: Corrected attention survival gate
         run: python scripts/corrected_attention_survival_gate.py
       - uses: actions/upload-artifact@v4
