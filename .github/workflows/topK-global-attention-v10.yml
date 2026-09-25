@@ -1,0 +1,27 @@
+name: Top-K Global Attention Consensus v10
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/topK_global_attention_consensus_v10.py'
+      - '.github/workflows/topK-global-attention-v10.yml'
+  workflow_dispatch:
+
+jobs:
+  topk-consensus:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -e .
+      - name: Run leakage-free top-K attention consensus probe
+        run: python scripts/topK_global_attention_consensus_v10.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: topK-global-attention-v10
+          path: results/topK_global_attention_consensus_v10.json
+          retention-days: 90
