@@ -1,0 +1,27 @@
+name: Multi-State Ring MEASURE SELECT v6
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/multi_state_ring_measure_select_v6.py'
+      - '.github/workflows/multi-state-ring-measure-v6.yml'
+  workflow_dispatch:
+
+jobs:
+  multi-state:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -e .
+      - name: Run multi-state ring MEASURE SELECT learner
+        run: python scripts/multi_state_ring_measure_select_v6.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: multi-state-ring-measure-v6
+          path: results/multi_state_ring_measure_select_v6.json
+          retention-days: 90
