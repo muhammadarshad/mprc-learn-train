@@ -1,0 +1,40 @@
+name: Attention Integration Loss v1-B
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/integer_learning_rate_gate.py'
+      - 'scripts/local_global_transpose_survival_gate.py'
+      - 'scripts/local_relation16_transpose_gate.py'
+      - 'scripts/attention_integration_loss_localization_v1b.py'
+      - '.github/workflows/attention-integration-loss-v1b.yml'
+  workflow_dispatch:
+
+jobs:
+  ablation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -e .
+      - name: Gate rational integer learner
+        run: python scripts/integer_learning_rate_gate.py
+      - name: Gate local/global transpose
+        run: python scripts/local_global_transpose_survival_gate.py
+      - name: Gate Relation16 transpose
+        run: python scripts/local_relation16_transpose_gate.py
+      - name: Run pair-preserving integration ablation
+        run: python scripts/attention_integration_loss_localization_v1b.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: attention-integration-loss-v1b
+          path: |
+            results/integer_learning_rate_gate.json
+            results/local_global_transpose_survival_gate.json
+            results/local_relation16_transpose_gate.json
+            results/attention_integration_loss_localization_v1b.json
+          retention-days: 90
