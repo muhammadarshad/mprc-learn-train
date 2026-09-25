@@ -1,0 +1,33 @@
+name: Corrected MPRC Attention Gate
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'src/mprc_structural/manifold.py'
+      - 'src/mprc_structural/attention.py'
+      - 'tests/test_manifold_layout.py'
+      - 'tests/test_corrected_attention.py'
+      - 'scripts/corrected_attention_survival_gate.py'
+      - '.github/workflows/corrected-attention-gate.yml'
+  workflow_dispatch:
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -e .
+      - name: Corrected manifold and attention tests
+        run: pytest -q tests/test_manifold_layout.py tests/test_manifold_data_information.py tests/test_corrected_attention.py
+      - name: Corrected attention survival gate
+        run: python scripts/corrected_attention_survival_gate.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: corrected-attention-gate
+          path: results/corrected_attention_survival_gate.json
+          retention-days: 90
