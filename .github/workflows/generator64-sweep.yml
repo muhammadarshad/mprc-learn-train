@@ -1,0 +1,45 @@
+name: Exhaustive Z64 Generator Sweep
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/generator64_exhaustive_sweep.py'
+      - 'scripts/generator64_l1_bench.cpp'
+      - '.github/workflows/generator64-sweep.yml'
+  workflow_dispatch:
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Exact structural sweep - all g 1..63
+        run: python scripts/generator64_exhaustive_sweep.py
+
+      - name: Build warm-L1 benchmark
+        run: c++ -O3 -march=native -std=c++20 scripts/generator64_l1_bench.cpp -o /tmp/generator64_l1_bench
+
+      - name: CPU information
+        run: |
+          mkdir -p results
+          (lscpu || true) > results/generator64_cpu.txt
+
+      - name: Warm-L1 traversal benchmark - all odd full-cycle g
+        run: /tmp/generator64_l1_bench
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: generator64-exhaustive-sweep
+          path: |
+            results/generator64_exhaustive_sweep.json
+            results/generator64_exhaustive_sweep.csv
+            results/generator64_l1_bench.json
+            results/generator64_l1_bench.csv
+            results/generator64_cpu.txt
+          retention-days: 90
