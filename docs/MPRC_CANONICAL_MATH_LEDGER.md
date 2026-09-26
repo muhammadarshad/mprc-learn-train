@@ -239,6 +239,91 @@ DATA=GEN^2D=49\times256=12,544.
 
 **Implementation boundary:** the \(15\times128\) branch is represented in current code. The \(15\times256\) branch has not yet been exercised because the current implementation does not instantiate a \(64\times256\) execution state.
 
+
+
+# 2B. Coprime manifold configuration rule
+
+Current MPRC rectangular configurations obey
+
+\[
+\boxed{
+H=2^n,\qquad \gcd(H,W)=1.
+}
+\]
+
+Because \(H\) is a power of two, \(W\) is odd.
+
+The two currently discovered/frozen configurations are
+
+\[
+\boxed{
+64\times157
+}
+\]
+
+and
+
+\[
+\boxed{
+128\times113.
+}
+\]
+
+They are **discovered configurations**, not widths forced solely by the
+coprimality condition.
+
+Exact checks:
+
+\[
+\gcd(64,157)=1,
+\qquad
+\gcd(128,113)=1.
+\]
+
+By the Chinese Remainder Theorem,
+
+\[
+\mathbb Z_{HW}\cong\mathbb Z_H\times\mathbb Z_W
+\]
+
+for each coprime pair.
+
+With \(GEN=7\),
+
+\[
+\gcd(7,64)=\gcd(7,157)=1
+\]
+
+and
+
+\[
+\gcd(7,128)=\gcd(7,113)=1,
+\]
+
+so GEN7 supports a full-cycle traversal of both discovered configurations.
+
+Important correction:
+
+\[
+64\times256=16,384
+\]
+
+is only an arithmetic envelope/count, **not** a current MPRC configuration,
+because
+
+\[
+\gcd(64,256)=64.
+\]
+
+Likewise,
+
+\[
+15\times256=3,840
+\]
+
+is an exact full-domain INFORMATION budget but is not yet mapped to a tested
+valid coprime configuration.
+
 # 3. GEN 7-8-9 structural ladder
 
 Define
