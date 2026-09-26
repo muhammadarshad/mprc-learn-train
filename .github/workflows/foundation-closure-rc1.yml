@@ -1,0 +1,30 @@
+name: Foundation Closure RC1
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'docs/FOUNDATION_CLOSURE_RC1.md'
+      - 'scripts/foundation_closure_gate_rc1.py'
+      - 'src/mprc_structural/ring.py'
+      - 'src/mprc_structural/manifold.py'
+      - 'src/mprc_structural/attention.py'
+  workflow_dispatch:
+
+jobs:
+  foundation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy
+      - name: Run closed-substrate finite gates
+        run: PYTHONPATH=. python scripts/foundation_closure_gate_rc1.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: foundation-closure-rc1
+          path: results/foundation_closure_rc1.json
+          retention-days: 90
