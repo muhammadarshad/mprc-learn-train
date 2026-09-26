@@ -1,0 +1,29 @@
+name: v28 ReactionLUT survival
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'src/mprc_structural/reaction_lut.py'
+      - 'gates/gate_v28_reaction_lut.py'
+      - 'docs/V28_REACTION_LUT.md'
+      - '.github/workflows/v28-reaction-lut.yml'
+  workflow_dispatch:
+
+jobs:
+  exact:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy
+      - run: pip install -e .
+      - run: python gates/gate_v28_reaction_lut.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v28-reaction-lut
+          path: results/v28_reaction_lut_survival.json
+          retention-days: 90
