@@ -261,93 +261,108 @@ That semantic problem remains open.
 
 ---
 
-## 8. No-Free-Metadata theorem
+## 8. Correct DATA / INFORMATION orientation
 
-This is the critical v24 result.
-
-Suppose one full wave channel is allowed to be an arbitrary element
+The total structural state budget is fixed:
 
 \[
-X\in R^{14,464}.
+\boxed{M=14,464.}
 \]
 
-Suppose we also want an independent metadata object
+The INFORMATION quantity is
 
 \[
-M\in R^{1,920}
+\boxed{I=1,920.}
 \]
 
-and require one structural manifold
+It is **not appended** to the full manifold.
 
-\[
-Y\in R^{14,464}
-\]
-
-to losslessly encode both \(X\) and \(M\).
-
-Then the source pair space has cardinality
-
-\[
-|R|^{14,464}\cdot|R|^{1,920}
-=
-256^{16,384}.
-\]
-
-But the target manifold has only
-
-\[
-256^{14,464}
-\]
-
-possible states.
-
-Since
-
-\[
-256^{16,384}
->
-256^{14,464},
-\]
-
-there is no injective map
+Instead the preserved DATA quantity is obtained by subtraction:
 
 \[
 \boxed{
-R^{14,464}\times R^{1,920}
-\hookrightarrow
-R^{14,464}.
+D=M-I
 }
 \]
 
-Therefore:
+so
 
 \[
 \boxed{
-\text{a full arbitrary wave channel cannot coexist with independent extra 1,920-state metadata in one 14,464-state manifold losslessly.}
+D=14,464-1,920=12,544.
 }
 \]
 
-This is a finite cardinality theorem.
+This matches the canonical construction
+
+\[
+\boxed{
+14,464=12,544+1,920.
+}
+\]
+
+The important orientation is therefore
+
+\[
+\boxed{
+M \rightarrow (M-I,\ I)
+}
+\]
+
+not
+
+\[
+M+I.
+\]
+
+So the previous "independent extra metadata" reading was the wrong model for
+the owner's construction.
 
 ---
 
-## 9. Consequence for INFORMATION
+## 9. Bidirectional structural action of the 1,920 quantity
 
-At least one of the following must be true:
+The INFORMATION quantity is structurally available in both directions:
 
-1. **Derived INFORMATION**  
-   INFORMATION is a deterministic function of the observation state and therefore adds no independent degrees of freedom.
+\[
+\boxed{
+M\pm I.
+}
+\]
 
-2. **Restricted observation family**  
-   the wave observation occupies a proper subset of \(R^{14,464}\), permitting a proven lossless codec into the 12,544 DATA coordinates.
+For the frozen values,
 
-3. **External INFORMATION state**  
-   INFORMATION is stored in an additional state/manifold rather than consuming capacity inside the same full observation manifold.
+\[
+M-I
+=
+14,464-1,920
+=
+\boxed{12,544},
+\]
 
-4. **Cross-channel dependency is exploited**  
-   the 16-channel observer is not treated as 16 independent arbitrary manifolds; an explicit invertible multi-channel codec uses algebraic redundancy among channels.
+while the opposite branch is
 
-No other lossless possibility exists for arbitrary independent metadata.
+\[
+M+I
+=
+14,464+1,920
+=
+16,384.
+\]
+
+The canonical preserved DATA branch is the **negative** direction:
+
+\[
+\boxed{
+DATA=M-I=12,544.
+}
+\]
+
+Thus \(1,920\) is not being interpreted as additional independent storage.
+It is a structural displacement/reserve relative to the fixed manifold count.
+
+The semantic meaning of the positive branch remains open unless separately
+defined by the MPRC construction.
 
 ---
 
