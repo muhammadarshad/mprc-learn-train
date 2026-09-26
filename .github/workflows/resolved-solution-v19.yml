@@ -1,0 +1,26 @@
+name: Resolved Solution Construction v19
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/resolved_solution_constructive_v19.py'
+      - '.github/workflows/resolved-solution-v19.yml'
+  workflow_dispatch:
+
+jobs:
+  constructive-solver:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run exact MPRC memory-construction gate
+        run: python scripts/resolved_solution_constructive_v19.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: resolved-solution-v19
+          path: results/resolved_solution_constructive_v19.json
+          retention-days: 90
