@@ -180,6 +180,98 @@ def conditional_uniqueness_gate(max_g: int = 4096):
     }
 
 
+
+def growth_hierarchy_gate(max_g: int = 4096):
+    """Verify continuous and discrete balance identities.
+
+    P(g)=6g(g-1)
+    M(g)=4g(g+2)
+    F(g)=P(g)-M(g)=2g(g-7)
+
+    Continuous:
+        F'(g)=4g-14
+        F''(g)=4
+
+    Discrete:
+        forward  Delta F(g)=4g-12
+        backward nabla F(g)=4g-16
+        centered difference=(F(g+1)-F(g-1))/2=4g-14
+        second difference=4
+    """
+
+    def P(g: int) -> int:
+        return 6 * g * (g - 1)
+
+    def M(g: int) -> int:
+        return 4 * g * (g + 2)
+
+    def F(g: int) -> int:
+        return P(g) - M(g)
+
+    for g in range(1, max_g + 1):
+        assert F(g) == 2 * g * (g - 7)
+
+        # Continuous symbolic formulas evaluated on integer g.
+        fp = 4 * g - 14
+        fpp = 4
+
+        # Exact discrete differences.
+        forward = F(g + 1) - F(g)
+        backward = F(g) - F(g - 1)
+        centered_num = F(g + 1) - F(g - 1)
+        second = F(g + 2) - 2 * F(g + 1) + F(g)
+
+        assert forward == 4 * g - 12
+        assert backward == 4 * g - 16
+        assert centered_num == 2 * fp
+        assert second == fpp
+
+    g = 7
+    assert P(g) == M(g) == 252
+    assert F(g) == 0
+
+    # Continuous velocity gap.
+    assert (12 * g - 6) - (8 * g + 8) == 14
+    assert 4 * g - 14 == 14 == 2 * g
+
+    # Local discrete velocity-gap ladder.
+    back = F(g) - F(g - 1)
+    center = (F(g + 1) - F(g - 1)) // 2
+    fwd = F(g + 1) - F(g)
+
+    assert [back, center, fwd] == [12, 14, 16]
+    assert [back, center, fwd] == [2 * (g - 1), 2 * g, 2 * (g + 1)]
+
+    # Continuous and discrete second-order gaps agree.
+    assert 12 - 8 == 4
+    assert F(g + 2) - 2 * F(g + 1) + F(g) == 4
+
+    return {
+        "pass": True,
+        "generators_checked": max_g,
+        "balance_point": {
+            "g": 7,
+            "P": 252,
+            "M": 252,
+            "F": 0,
+        },
+        "continuous": {
+            "F_prime_formula": "4g-14",
+            "F_double_prime": 4,
+            "F_prime_at_7": 14,
+            "phase_velocity_at_7": 78,
+            "structural_velocity_at_7": 64,
+        },
+        "discrete_at_7": {
+            "backward": 12,
+            "centered": 14,
+            "forward": 16,
+            "form": "2(g-1), 2g, 2(g+1)",
+            "second_difference": 4,
+        },
+    }
+
+
 def status_boundary():
     return {
         "exact": [
@@ -188,6 +280,10 @@ def status_boundary():
             "W=|B_GEN| for the five-site Manhattan dependency geometry",
             "4GEN(GEN+2)=D-4",
             "(6+6+6)*14=4*7*9=252 for the fixed encoder",
+            "F(g)=2g(g-7)",
+            "F_prime(g)=4g-14 and F_double_prime(g)=4",
+            "at g=7: backward/center/forward gaps = 12/14/16",
+            "second finite difference of F is 4",
         ],
         "candidate": [
             "Phi_g=(sum of three residues mod g)*(2g)",
@@ -210,6 +306,7 @@ def main():
         "fixed_phase": fixed_phase_gate(),
         "generalized_ladder": generalized_identity_gate(),
         "conditional_uniqueness": conditional_uniqueness_gate(),
+        "growth_hierarchy": growth_hierarchy_gate(),
         "status_boundary": status_boundary(),
         "pass": True,
     }
