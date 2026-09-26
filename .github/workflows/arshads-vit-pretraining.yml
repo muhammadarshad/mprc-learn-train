@@ -6,8 +6,11 @@ on:
     paths:
       - 'src/mprc_structural/qh4.py'
       - 'src/mprc_structural/directional_adi.py'
+      - 'src/mprc_structural/qh4_mixed.py'
+      - 'gates/gate_qh4_mixed_transpose.py'
       - 'gates/gate_arshads_vit_pretraining.py'
       - 'tests/test_directional_qh4.py'
+      - 'tests/test_qh4_mixed_transpose.py'
       - '.github/workflows/arshads-vit-pretraining.yml'
   workflow_dispatch:
 
@@ -22,10 +25,13 @@ jobs:
           python-version: '3.12'
       - run: pip install -r requirements.txt pytest
       - run: pip install -e .
-      - run: pytest -q tests/test_directional_qh4.py tests/test_corrected_attention.py tests/test_block_local112.py tests/test_manifold_layout.py tests/test_manifold_data_information.py
+      - run: pytest -q tests/test_directional_qh4.py tests/test_qh4_mixed_transpose.py tests/test_corrected_attention.py tests/test_block_local112.py tests/test_manifold_layout.py tests/test_manifold_data_information.py
+      - run: python gates/gate_qh4_mixed_transpose.py
       - run: python gates/gate_arshads_vit_pretraining.py
       - uses: actions/upload-artifact@v4
         with:
           name: arshads-vit-pretraining-contract
-          path: results/arshads_vit_pretraining_contract.json
+          path: |
+            results/arshads_vit_pretraining_contract.json
+            results/paper3_qh4_transpose_gate.json
           retention-days: 90
