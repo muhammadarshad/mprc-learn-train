@@ -218,26 +218,34 @@ C["G11_attention_state_path"]={
 # Contract-level source gaps. These are deliberately NOT guessed.
 blockers=[]
 
-# The coding spec requires QH4 derivation and directional IDENTIFY before transport,
-# but the current executable attention state path has no declared state transition
-# from those descriptors into transport/BIND.
+# v27 closes H/V phase schedule ambiguity for the v24 full-frame transpose:
+# BIND and REACT are transpose-equivariant and MEASURE is transpose-invariant.
+closed_execution=[
+    {
+        "id":"C2_PHASE_SCHEDULE",
+        "status":"CLOSED_v27",
+        "detail":"For the v24 full-frame transpose, H/V alternation is algebraically energy-equivalent and is not a training hyperparameter."
+    },
+    {
+        "id":"C3_METADATA_CODEC",
+        "status":"CLOSED_FOR_v24_EXECUTION",
+        "detail":"v24 preserves all 16x14,464 observed states exactly. INFORMATION lane semantics remain an open claim boundary, but no synthetic metadata is required for this observation path."
+    },
+    {
+        "id":"C4_REACTION_LUT",
+        "status":"CLOSED_CANDIDATE_v28",
+        "detail":"v28 fixes a label-free observation-populated circular-L1 medoid LUT rule and proves exact finite optimality for its stated reconstruction objective."
+    }
+]
+
+# One hard composition seam remains. Chapter-15 QH4 locate is content/ring
+# addressing and explicitly ignores sequential position; directional ADI is
+# local spatial relation. Their influence on candidate/query selection must be
+# stated explicitly rather than conflated with spatial transport.
 blockers.append({
-    "id":"C1_IDENTIFY_ROUTING_ACTION",
-    "detail":"v28 closes the lossless type composition directional bytes -> ADI9 bytes -> QH4 active/vacuum tags. What remains unfrozen is the ACTION: how those tagged relations select/alter the manifold state or query entering BIND. No benchmark-tuned routing rule may be inserted."
+    "id":"C1_IDENTIFY_TO_DECISION",
+    "detail":"No frozen rule yet states how QH4 content addresses plus corrected directional ADI evidence alter/select the candidate or query state that enters BIND/REACT/MEASURE."
 })
-
-# C2 phase schedule is CLOSED by v27 for the v24 full-frame orientation interface:
-# BIND and REACT are transpose-equivariant, MEASURE is transpose-invariant, and
-# six between-round transposes across seven rounds are bit-exact to R^7.
-
-
-# Metadata and task LUT are explicitly open interfaces in the coding spec.
-blockers.append({
-    "id":"C3_METADATA_CODEC",
-    "detail":"The 1,920 INFORMATION-byte semantic MetadataCodec is explicitly unfrozen."
-})
-# C4 ReactionLUT learning is now CLOSED as a pre-training candidate rule by v28:
-# observation-populated circular-L1 medoid per staple state, solved exactly over 256 outputs.
 
 report["all_exact_independent_gates_pass"]=all(v["pass"] for v in C.values())
 report["composition_blockers"]=blockers
