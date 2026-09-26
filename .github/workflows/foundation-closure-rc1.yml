@@ -6,6 +6,7 @@ on:
     paths:
       - 'docs/FOUNDATION_CLOSURE_RC1.md'
       - 'scripts/foundation_closure_gate_rc1.py'
+      - '.github/workflows/foundation-closure-rc1.yml'
       - 'src/mprc_structural/ring.py'
       - 'src/mprc_structural/manifold.py'
       - 'src/mprc_structural/attention.py'
