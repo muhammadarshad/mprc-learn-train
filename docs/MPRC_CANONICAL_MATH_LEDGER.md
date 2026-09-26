@@ -130,6 +130,35 @@ Thus
 }
 \]
 
+
+### 2.2 INFORMATION orientation — EXACT CONSTRUCTION
+
+The \(1,920\) INFORMATION quantity is **inside** the fixed \(14,464\)-state budget. It is not appended as an independent extra object.
+
+The preserved DATA quantity is
+
+\[
+\boxed{
+DATA=M-I=14,464-1,920=12,544.
+}
+\]
+
+The structural quantity \(I=1,920\) may be considered arithmetically in both directions,
+
+\[
+M\pm I,
+\]
+
+but the canonical data-preserving branch is
+
+\[
+\boxed{
+M-I=12,544.
+}
+\]
+
+The \(M+I=16,384\) branch is not assigned semantic meaning here unless separately defined.
+
 Also
 
 \[
