@@ -1,0 +1,38 @@
+name: Blind Real-Video MPRC Motion v17
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/blind_real_video_motion_v17.py'
+      - '.github/workflows/blind-real-video-v17.yml'
+  workflow_dispatch:
+
+jobs:
+  real-video:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install benchmark runtime
+        run: pip install -e . opencv-python-headless
+
+      - name: Download public real-world video
+        run: |
+          mkdir -p data
+          curl -L --fail --retry 3             "https://raw.githubusercontent.com/OmaarGaber/Computer-Vision-object-tracking-and-detection/main/vtest.avi"             -o data/vtest.avi
+          test -s data/vtest.avi
+
+      - name: Run blind MPRC motion benchmark
+        run: |
+          python scripts/blind_real_video_motion_v17.py             --video data/vtest.avi             --out results/blind_real_video_motion_v17.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: blind-real-video-v17
+          path: results/blind_real_video_motion_v17.json
+          retention-days: 90
