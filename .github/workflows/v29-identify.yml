@@ -1,0 +1,29 @@
+name: v29 relational IDENTIFY survival
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'src/mprc_structural/identify.py'
+      - 'gates/gate_v29_identify.py'
+      - 'docs/V29_RELATIONAL_IDENTIFY_CANDIDATE.md'
+      - '.github/workflows/v29-identify.yml'
+  workflow_dispatch:
+
+jobs:
+  exact:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - run: pip install -e .
+      - run: python gates/gate_v29_identify.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v29-identify
+          path: results/v29_relational_identify_survival.json
+          retention-days: 90
