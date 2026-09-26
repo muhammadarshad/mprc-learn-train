@@ -198,6 +198,145 @@ M=DATA+I_{1/2}.
 
 ---
 
+
+
+## 4A. Dual structural layouts with invariant DATA
+
+The owner's correction exposes two exact layouts.
+
+### Full-domain / no-polarity layout
+
+\[
+\boxed{
+64\times256=(49+15)\times256.
+}
+\]
+
+Therefore
+
+\[
+DATA_{full}
+=
+49\times256
+=
+\boxed{12,544}
+\]
+
+and
+
+\[
+INFO_{full}
+=
+15\times256
+=
+\boxed{3,840}.
+\]
+
+Total:
+
+\[
+12,544+3,840
+=
+\boxed{16,384}.
+\]
+
+### Half-domain / polarity-aware layout
+
+The current canonical construction is
+
+\[
+\boxed{
+128\times113
+=
+128\times(98+15).
+}
+\]
+
+Therefore
+
+\[
+DATA_{half}
+=
+98\times128
+=
+\boxed{12,544}
+\]
+
+and
+
+\[
+INFO_{half}
+=
+15\times128
+=
+\boxed{1,920}.
+\]
+
+Total:
+
+\[
+12,544+1,920
+=
+\boxed{14,464}.
+\]
+
+### DATA invariance
+
+The DATA count is exactly preserved:
+
+\[
+\boxed{
+49\times256
+=
+98\times128
+=
+12,544.
+}
+\]
+
+Since
+
+\[
+98=2\cdot49
+\]
+
+and
+
+\[
+256=2\cdot128,
+\]
+
+there is an exact reindexing of the DATA rectangle obtained by splitting every
+256-state row into two 128-state rows:
+
+\[
+\boxed{
+R^{49\times256}
+\cong
+R^{98\times128}.
+}
+\]
+
+This is a pure coordinate bijection and requires no information loss.
+
+The INFORMATION blocks are not equal:
+
+\[
+\boxed{
+15\times256
+=
+2(15\times128).
+}
+\]
+
+The owner's interpretation is that the \(15\times128\) construction works in
+both \(+\) and \(-\) polarity directions, whereas a construction not using
+polarity requires the full \(15\times256\) extent.
+
+The count relation is exact. The precise operational polarity map is still to
+be frozen separately.
+
+
 ## 5. Compact algebraic form
 
 Using
