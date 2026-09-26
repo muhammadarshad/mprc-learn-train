@@ -177,3 +177,67 @@ MEASURE
 ```
 
 Only after that trace and exactness gates pass may CIFAR training begin.
+
+
+---
+
+## Current closure update — v24/v27/v28
+
+This section supersedes the older blocker wording above without deleting the audit history.
+
+### C2 — H/V phase schedule: CLOSED for the v24 candidate interface
+
+v27 proves for the v24 channel-wise full-frame transpose that:
+
+- BIND commutes with transpose;
+- the isotropic five-site REACT commutes with transpose for any shared 256-entry LUT;
+- MEASURE is transpose invariant;
+- seven REACT rounds with six between-round H/V transposes are bit-identical to seven rounds without those transposes.
+
+Therefore H/V starting phase and between-round alternation are not benchmark-tunable parameters under this interface.
+
+Status: **EXACT EXECUTION SYMMETRY / CLOSED FOR v24**.
+
+### C3 — INFORMATION semantics: narrowed, not an execution blocker for v24 observation frames
+
+v24 maps the fixed 16-channel observation bank
+
+    16 x 113 x 128
+
+bijectively to
+
+    16 x 128 x 113.
+
+All 231,424 states are preserved. The 98+15 target partition exists coordinate-wise, but semantic interpretation of the last 15 lanes remains open.
+
+For the v24 observation path, no synthetic metadata values are invented: the full observed frame is carried through. Therefore missing semantic names for the 15 lanes do not block byte-exact execution.
+
+Status:
+
+- execution/storage interface: **CLOSED CANDIDATE, EXACT BIJECTION**
+- semantic interpretation: **OPEN CLAIM BOUNDARY**
+
+### C4 — ReactionLUT: v28 candidate under survival
+
+v28 fixes, before benchmark training, a label-free candidate objective:
+
+    L[u] = argmin_y sum_c H[u,c] * cdist(y,c)
+
+where H[u,c] counts observed center bytes c for five-site staple input u.
+
+Each LUT entry is a finite independent 256-candidate circular-L1 medoid problem. The rule is integer-only, byte-native and observation-populated.
+
+Status: **PENDING CI SURVIVAL**. It is not accepted until the v28 exact gate passes.
+
+### Remaining hard composition blocker
+
+C1 remains:
+
+    QH4 content address + corrected directional ADI evidence
+        -> decision/query influence before attention readout
+
+The wider MPRC source clarifies that QH4 locate() depends on byte value, not sequential/spatial position. Therefore QH4 must not be silently reinterpreted as a pixel-coordinate permutation.
+
+Directional ADI supplies local spatial relation; QH4 supplies content/ring address. Their typed combination is valid, but the rule that makes that IDENTIFY evidence influence candidate/query selection is still not frozen.
+
+**Training remains blocked until C1 is closed and v28 passes.**
