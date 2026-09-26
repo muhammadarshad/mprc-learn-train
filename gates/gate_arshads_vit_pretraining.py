@@ -222,17 +222,14 @@ blockers=[]
 # but the current executable attention state path has no declared state transition
 # from those descriptors into transport/BIND.
 blockers.append({
-    "id":"C1_DIRECTIONAL_IDENTIFY_ROUTING",
-    "detail":"Paper3 closes QH4 at address level via m=64*theta+21*a+7*p+sigma and the local T_k orbit law, but no frozen semantic map identifies the corrected directional slots (C,U1,U2,D1,D2,F1,F2,B1,B2) with the abstract (a,p) slot coordinate or otherwise turns that identity into a routing decision."
+    "id":"C1_IDENTIFY_ROUTING_ACTION",
+    "detail":"v28 closes the lossless type composition directional bytes -> ADI9 bytes -> QH4 active/vacuum tags. What remains unfrozen is the ACTION: how those tagged relations select/alter the manifold state or query entering BIND. No benchmark-tuned routing rule may be inserted."
 })
 
-# Native spatial H/V transpose is already exact and the GEVHV core is
-# transpose-equivariant.  Paper3 T_k is a distinct operator (cycle-type proof).
-# What remains open is only IDENTIFY's orientation/routing choice.
-blockers.append({
-    "id":"C2_IDENTIFY_PHASE_ROUTING",
-    "detail":"Native 16x7<->7x16 transport and BIND->REACT->MEASURE H/V equivariance are closed. The remaining open rule is how IDENTIFY selects/changes an orientation phase; Paper3 T_k must not be substituted for spatial transpose."
-})
+# C2 phase schedule is CLOSED by v27 for the v24 full-frame orientation interface:
+# BIND and REACT are transpose-equivariant, MEASURE is transpose-invariant, and
+# six between-round transposes across seven rounds are bit-exact to R^7.
+
 
 # Metadata and task LUT are explicitly open interfaces in the coding spec.
 blockers.append({
@@ -247,7 +244,7 @@ blockers.append({
 report["all_exact_independent_gates_pass"]=all(v["pass"] for v in C.values())
 report["composition_blockers"]=blockers
 report["training_authorized"]=False
-report["status"]="SURVIVED EXACT PRIMITIVES; TRAINING BLOCKED AT UNSPECIFIED COMPOSITION"
+report["status"]="SURVIVED EXACT PRIMITIVES + v27 PHASE + v28 TYPED IDENTIFY; TRAINING BLOCKED AT IDENTIFY ACTION / OPEN SEMANTICS"
 report["rule"]="No classifier/training workflow may be enabled until C1-C4 are resolved by frozen equations/interfaces, not benchmark tuning."
 
 root=Path(__file__).resolve().parents[1]
