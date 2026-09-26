@@ -1,0 +1,27 @@
+name: U-Observer Temporal Movement v15
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/u_observer_temporal_movement_v15.py'
+      - '.github/workflows/u-observer-temporal-v15.yml'
+  workflow_dispatch:
+
+jobs:
+  temporal-observer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -e .
+      - name: Run U-Observer temporal movement benchmark
+        run: python scripts/u_observer_temporal_movement_v15.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: u-observer-temporal-v15
+          path: results/u_observer_temporal_movement_v15.json
+          retention-days: 90
