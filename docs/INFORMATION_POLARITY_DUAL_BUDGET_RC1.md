@@ -200,47 +200,40 @@ M=DATA+I_{1/2}.
 
 
 
-## 4A. Dual structural layouts with invariant DATA
+## 4A. Dual budget arithmetic and current valid configurations
 
 The owner's correction exposes two exact layouts.
 
-### Full-domain / no-polarity layout
+### Full-domain INFORMATION budget
+
+The full-domain INFORMATION count is
 
 \[
 \boxed{
-64\times256=(49+15)\times256.
+15\times256=3,840.
 }
 \]
 
-Therefore
+The arithmetic envelope
 
 \[
-DATA_{full}
-=
-49\times256
-=
-\boxed{12,544}
+64\times256=16,384
 \]
 
-and
+is useful for count identities, but it is **not** a current valid MPRC
+configuration because
 
 \[
-INFO_{full}
-=
-15\times256
-=
-\boxed{3,840}.
+\gcd(64,256)=64\ne1.
 \]
 
-Total:
+Therefore do not promote \(64\times256\) from arithmetic envelope to manifold
+configuration.
 
-\[
-12,544+3,840
-=
-\boxed{16,384}.
-\]
+The \(3,840\) budget is exact but its mapping to a valid coprime MPRC
+configuration remains open.
 
-### Half-domain / polarity-aware layout
+### Current polarity-aware configuration
 
 The current canonical construction is
 
@@ -282,7 +275,7 @@ Total:
 
 ### DATA invariance
 
-The DATA count is exactly preserved:
+The DATA count identity remains exact:
 
 \[
 \boxed{
@@ -294,30 +287,22 @@ The DATA count is exactly preserved:
 }
 \]
 
-Since
+This is a count/reindexing identity.
+
+It does not by itself establish a valid \(49\times256\) or \(64\times256\)
+execution configuration.
+
+The current tested manifold remains
 
 \[
-98=2\cdot49
+\boxed{128\times113}
 \]
 
-and
+and the other current discovered valid configuration is
 
 \[
-256=2\cdot128,
+\boxed{64\times157}.
 \]
-
-there is an exact reindexing of the DATA rectangle obtained by splitting every
-256-state row into two 128-state rows:
-
-\[
-\boxed{
-R^{49\times256}
-\cong
-R^{98\times128}.
-}
-\]
-
-This is a pure coordinate bijection and requires no information loss.
 
 The INFORMATION blocks are not equal:
 
