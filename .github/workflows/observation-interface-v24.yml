@@ -1,0 +1,30 @@
+name: Observation Structural Interface v24
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'docs/V24_OBSERVATION_STRUCTURAL_INTERFACE.md'
+      - 'scripts/observation_structural_interface_v24.py'
+      - '.github/workflows/observation-interface-v24.yml'
+  workflow_dispatch:
+
+jobs:
+  interface:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy
+
+      - name: Run v24 foundation interface gates
+        run: python scripts/observation_structural_interface_v24.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: observation-interface-v24
+          path: results/v24_observation_structural_interface.json
+          retention-days: 90
