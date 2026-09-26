@@ -1,0 +1,38 @@
+name: Real Shape-Color Construction v20
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/real_shape_color_constructive_v20.py'
+      - '.github/workflows/real-shape-color-v20.yml'
+  workflow_dispatch:
+
+jobs:
+  real-factors:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install runtime
+        run: pip install -e . pillow
+
+      - name: Sparse checkout real Fruits-360 factor cross
+        run: |
+          git clone --depth 1 --filter=blob:none --sparse             https://github.com/fruits-360/fruits-360-100x100.git             data/fruits360
+          cd data/fruits360
+          git sparse-checkout set             "Training/Orange 1"             "Training/Limes 1"             "Training/Pepper Orange 1"             "Training/Pepper Green 1"             "Test/Orange 1"             "Test/Limes 1"             "Test/Pepper Orange 1"             "Test/Pepper Green 1"
+
+      - name: Run real orthogonal-factor construction benchmark
+        run: |
+          python scripts/real_shape_color_constructive_v20.py             --root data/fruits360             --out results/real_shape_color_constructive_v20.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: real-shape-color-v20
+          path: results/real_shape_color_constructive_v20.json
+          retention-days: 90
