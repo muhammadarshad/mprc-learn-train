@@ -222,15 +222,16 @@ blockers=[]
 # but the current executable attention state path has no declared state transition
 # from those descriptors into transport/BIND.
 blockers.append({
-    "id":"C1_IDENTIFY_TO_STATE",
-    "detail":"v24 closes 16-channel observation->structural frames and v26 defines 16D relational IDENTIFY evidence, but no frozen equation yet maps QH4 + corrected directional ADI descriptors into the state transition consumed by generator transport/BIND."
+    "id":"C1_DIRECTIONAL_IDENTIFY_ROUTING",
+    "detail":"Paper3 closes QH4 at address level via m=64*theta+21*a+7*p+sigma and the local T_k orbit law, but no frozen semantic map identifies the corrected directional slots (C,U1,U2,D1,D2,F1,F2,B1,B2) with the abstract (a,p) slot coordinate or otherwise turns that identity into a routing decision."
 })
 
-# Exact 16x7<->7x16 coordinate transport exists, but the source does not freeze
-# the row/column phase schedule inside the seven REACT rounds.
+# Native spatial H/V transpose is already exact and the GEVHV core is
+# transpose-equivariant.  Paper3 T_k is a distinct operator (cycle-type proof).
+# What remains open is only IDENTIFY's orientation/routing choice.
 blockers.append({
-    "id":"C2_PHASE_SCHEDULE",
-    "detail":"No frozen equation states when/how H<->V native transpose is applied inside the seven-round forward."
+    "id":"C2_IDENTIFY_PHASE_ROUTING",
+    "detail":"Native 16x7<->7x16 transport and BIND->REACT->MEASURE H/V equivariance are closed. The remaining open rule is how IDENTIFY selects/changes an orientation phase; Paper3 T_k must not be substituted for spatial transpose."
 })
 
 # Metadata and task LUT are explicitly open interfaces in the coding spec.
