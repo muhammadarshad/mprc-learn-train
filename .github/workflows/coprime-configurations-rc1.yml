@@ -1,0 +1,29 @@
+name: Coprime MPRC Configurations RC1
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'docs/COPRIME_MANIFOLD_CONFIGURATIONS_RC1.md'
+      - 'docs/INFORMATION_POLARITY_DUAL_BUDGET_RC1.md'
+      - 'docs/MPRC_CANONICAL_MATH_LEDGER.md'
+      - 'scripts/coprime_configuration_gate.py'
+      - '.github/workflows/coprime-configurations-rc1.yml'
+  workflow_dispatch:
+
+jobs:
+  coprime-configurations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Run coprime configuration gates
+        run: python scripts/coprime_configuration_gate.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coprime-configurations-rc1
+          path: results/coprime_mprc_configurations_rc1.json
+          retention-days: 90
