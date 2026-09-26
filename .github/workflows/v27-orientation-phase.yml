@@ -1,0 +1,27 @@
+name: v27 orientation phase survival
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'gates/gate_v27_orientation_phase.py'
+      - 'docs/V27_ORIENTATION_PHASE_EQUIVARIANCE.md'
+      - '.github/workflows/v27-orientation-phase.yml'
+  workflow_dispatch:
+
+jobs:
+  exact:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy
+      - run: python gates/gate_v27_orientation_phase.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v27-orientation-phase
+          path: results/v27_orientation_phase_survival.json
+          retention-days: 90
