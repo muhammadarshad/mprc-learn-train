@@ -1,0 +1,27 @@
+name: GEN7 Movement Recovery v14
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/gen7_movement_recovery_v14.py'
+      - '.github/workflows/gen7-movement-recovery-v14.yml'
+  workflow_dispatch:
+
+jobs:
+  movement-recovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -e .
+      - name: Run GEN7 movement recovery benchmark
+        run: python scripts/gen7_movement_recovery_v14.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gen7-movement-recovery-v14
+          path: results/gen7_movement_recovery_v14.json
+          retention-days: 90
