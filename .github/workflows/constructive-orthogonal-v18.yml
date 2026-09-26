@@ -1,0 +1,27 @@
+name: Constructive Orthogonal Generalization v18
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/constructive_orthogonal_generalization_v18.py'
+      - '.github/workflows/constructive-orthogonal-v18.yml'
+  workflow_dispatch:
+
+jobs:
+  constructive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -e .
+      - name: Run constructive unseen-factor benchmark
+        run: python scripts/constructive_orthogonal_generalization_v18.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: constructive-orthogonal-v18
+          path: results/constructive_orthogonal_generalization_v18.json
+          retention-days: 90
