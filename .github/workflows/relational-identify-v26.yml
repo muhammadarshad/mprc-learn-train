@@ -1,0 +1,57 @@
+name: Relational IDENTIFY v26
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'docs/V26_RELATIONAL_IDENTIFY.md'
+      - 'scripts/relational_identify_v26.py'
+      - 'scripts/wave_encoder_torch.py'
+      - '.github/workflows/relational-identify-v26.yml'
+  workflow_dispatch:
+
+jobs:
+  relational-identify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install runtime
+        run: |
+          pip install numpy pillow
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Sparse checkout Fruits-360 factor cross
+        run: |
+          git clone --depth 1 --filter=blob:none --sparse \
+            https://github.com/fruits-360/fruits-360-100x100.git \
+            data/fruits360
+          cd data/fruits360
+          git sparse-checkout set \
+            "Training/Orange 1" \
+            "Training/Limes 1" \
+            "Training/Pepper Orange 1" \
+            "Training/Pepper Green 1" \
+            "Test/Orange 1" \
+            "Test/Limes 1" \
+            "Test/Pepper Orange 1" \
+            "Test/Pepper Green 1"
+
+      - name: Run v26 relational IDENTIFY
+        run: |
+          PYTHONPATH=. python scripts/relational_identify_v26.py \
+            --root data/fruits360 \
+            --json results/v26_relational_identify.json \
+            --png results/v26_relational_identify.png
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: relational-identify-v26
+          path: |
+            results/v26_relational_identify.json
+            results/v26_relational_identify.png
+          retention-days: 90
