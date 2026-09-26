@@ -217,35 +217,43 @@ def partition_gate():
     }
 
 
-def no_free_metadata_gate():
-    observation_states = 14_464
-    independent_metadata_states = 1_920
-    target_states = 14_464
+def fixed_budget_information_gate():
+    """Verify the owner's fixed-budget orientation.
 
-    source_exponent = observation_states + independent_metadata_states
-    target_exponent = target_states
+    Total manifold:
+        M = 14,464
 
-    assert source_exponent == 16_384
-    assert target_exponent == 14_464
-    assert source_exponent > target_exponent
+    INFORMATION:
+        I = 1,920
 
-    # Compare cardinalities through log_256 exponents exactly instead of
-    # materializing astronomically large integers.
-    excess = source_exponent - target_exponent
-    assert excess == 1_920
+    Preserved DATA:
+        D = M - I = 12,544
+
+    The opposite arithmetic branch M+I also exists numerically, but the
+    canonical DATA-preserving construction uses subtraction.
+    """
+    M = 14_464
+    I = 1_920
+    D = M - I
+    plus = M + I
+
+    assert D == 12_544
+    assert plus == 16_384
+    assert D + I == M
+    assert D == 128 * 98
+    assert I == 128 * 15
+    assert M == 128 * 113
 
     return {
         "pass": True,
-        "ring_cardinality": 256,
-        "source_pair_log256_cardinality": source_exponent,
-        "target_log256_cardinality": target_exponent,
-        "excess_independent_state_exponent": excess,
-        "injective_lossless_map_for_arbitrary_pair_exists": False,
-        "theorem": (
-            "An arbitrary full 14,464-state observation plus an independent "
-            "1,920-state metadata object cannot be encoded injectively into "
-            "one 14,464-state Z256 manifold."
-        ),
+        "M": M,
+        "I": I,
+        "M_minus_I": D,
+        "M_plus_I": plus,
+        "canonical_preserved_data": D,
+        "canonical_orientation": "DATA = M - I",
+        "information_is_extra_independent_storage": False,
+        "positive_branch_semantics": "OPEN",
     }
 
 
@@ -286,11 +294,12 @@ def main():
             "channel_independence":channel_independence_gate(),
             "native_rectangles":native_rectangle_gate(),
             "partition":partition_gate(),
-            "no_free_metadata":no_free_metadata_gate(),
+            "fixed_budget_information":fixed_budget_information_gate(),
         },
         "encoder_degree_of_freedom":encoder_degree_of_freedom_note(),
         "closure":{
             "G6a_coordinate_type_interface":"PASS for candidate Pi_T",
+            "G6b_information_budget_orientation":"PASS: DATA=M-I",
             "G6b_information_semantics":"OPEN",
             "G6c_multichannel_binding_or_codec":"OPEN",
             "15_plus_1_channel_semantics":"OPEN",
@@ -298,9 +307,9 @@ def main():
         "pass":True,
         "claim_boundary":(
             "v24 proves exact properties of the explicitly defined channel-wise "
-            "frame transpose and a cardinality obstruction for independent metadata. "
-            "It does not prove Pi_T is the unique/canonical MPRC packing law and does "
-            "not assign semantic meaning to the 15 INFORMATION lanes."
+            "frame transpose and the fixed-budget relation DATA=M-I. It does not prove "
+            "Pi_T is the unique/canonical MPRC packing law and does not yet define the "
+            "semantic law of the bidirectional INFORMATION action."
         ),
     }
 
