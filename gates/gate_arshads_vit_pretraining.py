@@ -111,6 +111,44 @@ for u in range(256):
         vf+=1
 C["G7_vector_BIND_fusion"]={"pass":True,"sum_cases":vf}
 
+# G7b v24 observation -> structural interface: 16 x 113 x 128
+# becomes 16 independent 128 x 113 manifolds by channel-wise transpose.
+obs_a=rng.integers(0,256,size=(16,113,128),dtype=np.uint8)
+obs_b=rng.integers(0,256,size=(16,113,128),dtype=np.uint8)
+struct_a=np.transpose(obs_a,(0,2,1)).copy()
+struct_b=np.transpose(obs_b,(0,2,1)).copy()
+assert struct_a.shape==struct_b.shape==(16,128,113)
+assert np.array_equal(np.transpose(struct_a,(0,2,1)),obs_a)
+
+# Coordinate-wise BIND commutes with Pi_T.
+bind_obs=((obs_a.astype(np.uint16)+obs_b.astype(np.uint16))&0xFF).astype(np.uint8)
+bind_struct=((struct_a.astype(np.uint16)+struct_b.astype(np.uint16))&0xFF).astype(np.uint8)
+assert np.array_equal(np.transpose(bind_obs,(0,2,1)),bind_struct)
+
+# Wide ring MEASURE is invariant under coordinate permutation.
+def array_energy(a,b):
+    aa=a.astype(np.int16,copy=False); bb=b.astype(np.int16,copy=False)
+    ab=(aa-bb)&0xFF; ba=(bb-aa)&0xFF
+    return int(np.minimum(ab,ba).sum(dtype=np.int64))
+assert array_energy(obs_a,obs_b)==array_energy(struct_a,struct_b)
+C["G7b_v24_observation_interface"]={
+    "pass":True,
+    "source_shape":[16,113,128],
+    "target_shape":[16,128,113],
+    "states_preserved":16*113*128,
+    "BIND_commutes":True,
+    "MEASURE_invariant":True
+}
+
+# v26 IDENTIFY type survival: preserve the full 16-dimensional evidence vector.
+raw_vec=[array_energy(struct_a[k],struct_b[k]) for k in range(16)]
+assert len(raw_vec)==16 and all(isinstance(v,int) for v in raw_vec)
+C["G7c_v26_IDENTIFY_type"]={
+    "pass":True,
+    "evidence_dimensions":16,
+    "channels_collapsed":False
+}
+
 # G8 canonical DATA+INFORMATION pack is exact.
 rng=np.random.default_rng(20260927)
 data=rng.integers(0,256,size=manifold.DATA_BYTES,dtype=np.uint8)
@@ -183,7 +221,7 @@ blockers=[]
 # from those descriptors into transport/BIND.
 blockers.append({
     "id":"C1_IDENTIFY_TO_STATE",
-    "detail":"No frozen equation maps QH4 + directional ADI descriptors into the 128x113 state consumed by generator transport/BIND."
+    "detail":"v24 closes 16-channel observation->structural frames and v26 defines 16D relational IDENTIFY evidence, but no frozen equation yet maps QH4 + corrected directional ADI descriptors into the state transition consumed by generator transport/BIND."
 })
 
 # Exact 16x7<->7x16 coordinate transport exists, but the source does not freeze
