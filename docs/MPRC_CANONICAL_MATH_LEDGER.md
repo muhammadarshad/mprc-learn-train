@@ -167,6 +167,78 @@ Also
 
 ---
 
+
+
+# 2A. INFORMATION polarity dual-budget envelope
+
+The structural envelope also admits the exact count
+
+\[
+\boxed{
+E=(GEN^2+N)D=64\times256=16,384.
+}
+\]
+
+The half-domain INFORMATION budget is
+
+\[
+\boxed{
+I_{1/2}=N\frac D2=15\times128=1,920.
+}
+\]
+
+The full-domain INFORMATION budget is
+
+\[
+\boxed{
+I_1=ND=15\times256=3,840=2I_{1/2}.
+}
+\]
+
+Therefore
+
+\[
+\boxed{
+E-I_{1/2}=16,384-1,920=14,464=M
+}
+\]
+
+and
+
+\[
+\boxed{
+E-I_1=16,384-3,840=12,544=DATA.
+}
+\]
+
+Equivalently,
+
+\[
+\boxed{
+16,384
+\to
+14,464
+\to
+12,544
+}
+\]
+
+in two equal steps of
+
+\[
+\boxed{-1,920}.
+\]
+
+Also,
+
+\[
+\boxed{
+DATA=GEN^2D=49\times256=12,544.
+}
+\]
+
+**Implementation boundary:** the \(15\times128\) branch is represented in current code. The \(15\times256\) branch has not yet been exercised because the current implementation does not instantiate a \(64\times256\) execution state.
+
 # 3. GEN 7-8-9 structural ladder
 
 Define
