@@ -1,0 +1,31 @@
+name: Arshads ViT pre-training contract
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'src/mprc_structural/qh4.py'
+      - 'src/mprc_structural/directional_adi.py'
+      - 'gates/gate_arshads_vit_pretraining.py'
+      - 'tests/test_directional_qh4.py'
+      - '.github/workflows/arshads-vit-pretraining.yml'
+  workflow_dispatch:
+
+jobs:
+  survival:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - run: pip install -e .
+      - run: pytest -q tests/test_directional_qh4.py tests/test_corrected_attention.py tests/test_block_local112.py
+      - run: python gates/gate_arshads_vit_pretraining.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: arshads-vit-pretraining-contract
+          path: results/arshads_vit_pretraining_contract.json
+          retention-days: 90
