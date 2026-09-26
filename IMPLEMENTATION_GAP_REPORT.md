@@ -144,11 +144,20 @@ Two semantic/runtime seams remain and must NOT be guessed:
 1. The corrected directional order
    `(C,U1,U2,D1,D2,F1,F2,B1,B2)` has not yet been given a frozen semantic
    bijection to Paper-3's `(a,p)` slot coordinate.
-2. The forward schedule selecting `k` / deciding when the native H<->V orientation
-   transpose occurs during the seven REACT rounds is not frozen.
+2. Paper-3 `T_k` and native image H<->V transpose are now proved to be
+   **different operators**. The corrected directional spatial transpose has cycle type
+   `1^1 2^4`; every Paper-3 `T_k` has cycle type `1^3 2^3`. They cannot be
+   identified by any bijection.
+3. The native `16x7 <-> 7x16` transpose is proved to commute with coordinate-wise
+   BIND and REACT (for arbitrary pointwise LUT) and to leave MEASURE invariant when
+   state/query transpose together. Therefore the GEVHV core itself has no unresolved
+   H/V arithmetic.
+4. What remains open is the **IDENTIFY/routing phase semantics**: which orientation
+   phase is selected by QH4/directional identity and when that routing choice changes.
+   It is not a BIND/REACT/MEASURE correctness problem.
 
-Thus QH4/ADI/Transpose are no longer merely disconnected arithmetic, but the final
-directional-slot and runtime-phase interfaces remain OPEN.
+Thus the principal remaining C1/C2 seam is now the directional IDENTIFY -> QH4/routing
+interface, not the native transpose or GEVHV core arithmetic.
 
 ## Next legal step
 
