@@ -1,0 +1,27 @@
+name: Relative U-Observer v16
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/relative_u_observer_v16.py'
+      - '.github/workflows/relative-u-observer-v16.yml'
+  workflow_dispatch:
+
+jobs:
+  relative-observer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -e .
+      - name: Run relative U-Observer benchmark
+        run: python scripts/relative_u_observer_v16.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: relative-u-observer-v16
+          path: results/relative_u_observer_v16.json
+          retention-days: 90
