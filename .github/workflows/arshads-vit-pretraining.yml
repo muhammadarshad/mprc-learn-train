@@ -7,7 +7,10 @@ on:
       - 'src/mprc_structural/qh4.py'
       - 'src/mprc_structural/directional_adi.py'
       - 'src/mprc_structural/qh4_mixed.py'
+      - 'src/mprc_structural/identify_qh4_adi.py'
       - 'gates/gate_qh4_mixed_transpose.py'
+      - 'gates/gate_v27_orientation_phase.py'
+      - 'gates/gate_v28_typed_identify.py'
       - 'gates/gate_directional_vs_paper3_transpose.py'
       - 'gates/gate_native_hv_gevhv_equivariance.py'
       - 'gates/gate_arshads_vit_pretraining.py'
@@ -31,6 +34,8 @@ jobs:
       - run: python gates/gate_qh4_mixed_transpose.py
       - run: python gates/gate_directional_vs_paper3_transpose.py
       - run: python gates/gate_native_hv_gevhv_equivariance.py
+      - run: python gates/gate_v27_orientation_phase.py
+      - run: python gates/gate_v28_typed_identify.py
       - run: python gates/gate_arshads_vit_pretraining.py
       - uses: actions/upload-artifact@v4
         with:
@@ -40,4 +45,6 @@ jobs:
             results/paper3_qh4_transpose_gate.json
             results/directional_vs_paper3_transpose_gate.json
             results/native_hv_gevhv_equivariance.json
+            results/v27_orientation_phase_survival.json
+            results/v28_typed_identify_qh4_adi.json
           retention-days: 90
