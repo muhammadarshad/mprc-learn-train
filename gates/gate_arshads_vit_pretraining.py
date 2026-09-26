@@ -111,6 +111,8 @@ for u in range(256):
         vf+=1
 C["G7_vector_BIND_fusion"]={"pass":True,"sum_cases":vf}
 
+rng=np.random.default_rng(20260927)
+
 # G7b v24 observation -> structural interface: 16 x 113 x 128
 # becomes 16 independent 128 x 113 manifolds by channel-wise transpose.
 obs_a=rng.integers(0,256,size=(16,113,128),dtype=np.uint8)
