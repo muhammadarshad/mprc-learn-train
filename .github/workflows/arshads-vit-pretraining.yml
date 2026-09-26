@@ -9,6 +9,7 @@ on:
       - 'src/mprc_structural/qh4_mixed.py'
       - 'gates/gate_qh4_mixed_transpose.py'
       - 'gates/gate_directional_vs_paper3_transpose.py'
+      - 'gates/gate_native_hv_gevhv_equivariance.py'
       - 'gates/gate_arshads_vit_pretraining.py'
       - 'tests/test_directional_qh4.py'
       - 'tests/test_qh4_mixed_transpose.py'
@@ -29,6 +30,7 @@ jobs:
       - run: pytest -q tests/test_directional_qh4.py tests/test_qh4_mixed_transpose.py tests/test_corrected_attention.py tests/test_block_local112.py tests/test_manifold_layout.py tests/test_manifold_data_information.py
       - run: python gates/gate_qh4_mixed_transpose.py
       - run: python gates/gate_directional_vs_paper3_transpose.py
+      - run: python gates/gate_native_hv_gevhv_equivariance.py
       - run: python gates/gate_arshads_vit_pretraining.py
       - uses: actions/upload-artifact@v4
         with:
@@ -37,4 +39,5 @@ jobs:
             results/arshads_vit_pretraining_contract.json
             results/paper3_qh4_transpose_gate.json
             results/directional_vs_paper3_transpose_gate.json
+            results/native_hv_gevhv_equivariance.json
           retention-days: 90
