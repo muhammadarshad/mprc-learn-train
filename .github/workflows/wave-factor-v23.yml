@@ -1,0 +1,45 @@
+name: Wave Channel Factor Discovery v23
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/wave_encoder_torch.py'
+      - 'scripts/wave_channel_factor_discovery_v23.py'
+      - '.github/workflows/wave-factor-v23.yml'
+  workflow_dispatch:
+
+jobs:
+  factor-discovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install runtime
+        run: |
+          pip install pillow numpy
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Sparse checkout Fruits-360 factor cross
+        run: |
+          git clone --depth 1 --filter=blob:none --sparse             https://github.com/fruits-360/fruits-360-100x100.git             data/fruits360
+          cd data/fruits360
+          git sparse-checkout set             "Training/Orange 1"             "Training/Limes 1"             "Training/Pepper Orange 1"             "Training/Pepper Green 1"             "Test/Orange 1"             "Test/Limes 1"             "Test/Pepper Orange 1"             "Test/Pepper Green 1"
+
+      - name: Run owner 16-channel factor discovery
+        run: |
+          mkdir -p results
+          python scripts/wave_channel_factor_discovery_v23.py             --root data/fruits360             --json results/v23_wave_factor_discovery.json             --photos results/v23_real_photo_audit.png             --channels results/v23_channel_roles.png
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: wave-factor-v23
+          path: |
+            results/v23_wave_factor_discovery.json
+            results/v23_real_photo_audit.png
+            results/v23_channel_roles.png
+          retention-days: 90
