@@ -236,15 +236,13 @@ blockers.append({
     "id":"C3_METADATA_CODEC",
     "detail":"The 1,920 INFORMATION-byte semantic MetadataCodec is explicitly unfrozen."
 })
-blockers.append({
-    "id":"C4_REACTION_LUT",
-    "detail":"Task-specific learned ReactionLUT policy is explicitly unfrozen."
-})
+# C4 ReactionLUT learning is now CLOSED as a pre-training candidate rule by v28:
+# observation-populated circular-L1 medoid per staple state, solved exactly over 256 outputs.
 
 report["all_exact_independent_gates_pass"]=all(v["pass"] for v in C.values())
 report["composition_blockers"]=blockers
 report["training_authorized"]=False
-report["status"]="SURVIVED EXACT PRIMITIVES + v27 PHASE + v28 TYPED IDENTIFY; TRAINING BLOCKED AT IDENTIFY ACTION / OPEN SEMANTICS"
+report["status"]="SURVIVED EXACT PRIMITIVES + v27 PHASE + v28 TYPED IDENTIFY + v28 REACTION LUT; TRAINING BLOCKED AT IDENTIFY ACTION / INFORMATION SEMANTICS"
 report["rule"]="No classifier/training workflow may be enabled until C1-C4 are resolved by frozen equations/interfaces, not benchmark tuning."
 
 root=Path(__file__).resolve().parents[1]
