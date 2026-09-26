@@ -33,6 +33,7 @@ from mprc_structural.qh4 import (
 
 report={"gate":"Arshad's ViT pre-training contract","checks":{}}
 C=report["checks"]
+rng=np.random.default_rng(20260927)
 
 # G1 QH4.
 pos=active_positions()
@@ -152,7 +153,6 @@ C["G7c_v26_IDENTIFY_type"]={
 }
 
 # G8 canonical DATA+INFORMATION pack is exact.
-rng=np.random.default_rng(20260927)
 data=rng.integers(0,256,size=manifold.DATA_BYTES,dtype=np.uint8)
 info=rng.integers(0,256,size=manifold.INFO_BYTES,dtype=np.uint8)
 hv=manifold.pack(data,info)
