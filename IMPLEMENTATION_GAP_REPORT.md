@@ -114,29 +114,48 @@ Reasons:
 
 Their numbers remain historical diagnostics only.
 
-## Exact composition seam still unresolved
+## Exact composition seam — narrowed by Paper 3
 
-The frozen sources establish independently:
+The frozen sources now establish the following exact bridge in addition to the earlier
+primitive gates:
 
-- QH4 addresses byte/ring values exactly;
-- directional ADI-9 is exact;
-- generator-7 is a lossless ring/address traversal;
-- rectangular transpose is bijective;
-- BIND -> REACT -> MEASURE is defined exactly.
+```
+gamma - 1 = 9*theta + 3*a + p
+m = 64*theta + 21*a + 7*p + sigma
+z = 7*m mod 256
+```
 
-What is **not yet specified tightly enough in the current source** is the state-transition
-rule that makes **QH4 + generator-7 navigation alter/feed the directional ADI manifold**
-before BIND/REACT, rather than merely being returned as metadata/diagnostics.
+with `theta in Z4`, `a,p in Z3`, and `sigma=1..7`. This is the exact
+`4 x 9 x 7 = 252` QH4 active-state decomposition from Paper 3.
 
-That rule must be sourced or stated explicitly. It must not be invented to improve CIFAR
-accuracy.
+Paper 3 also proves the local Arshad Transpose
+
+```
+T_k(a,p) = (p+k, a-k) mod 3
+```
+
+with `T_k^2=I`, invariant `a+p`, and 84 fixed + 84 two-cycles globally.
+
+These facts close the **address-level** coupling between the 9 local slots, 7 transport
+steps, four quarters, QH4 active addresses, and the local transpose orbit geometry.
+
+Two semantic/runtime seams remain and must NOT be guessed:
+
+1. The corrected directional order
+   `(C,U1,U2,D1,D2,F1,F2,B1,B2)` has not yet been given a frozen semantic
+   bijection to Paper-3's `(a,p)` slot coordinate.
+2. The forward schedule selecting `k` / deciding when the native H<->V orientation
+   transpose occurs during the seven REACT rounds is not frozen.
+
+Thus QH4/ADI/Transpose are no longer merely disconnected arithmetic, but the final
+directional-slot and runtime-phase interfaces remain OPEN.
 
 ## Next legal step
 
 Implement no training.
 
-First implement an instrumented `ArshadBlock` only after the missing transport-composition
-rule is frozen. Its forward trace must show nonzero call counts and byte counts for:
+First implement an instrumented `ArshadBlock` only after the remaining directional-slot
+mapping and runtime phase schedule are frozen. Its forward trace must show nonzero call counts and byte counts for:
 
 ```
 QH4
