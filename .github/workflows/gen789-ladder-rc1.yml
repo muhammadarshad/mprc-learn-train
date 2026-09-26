@@ -5,6 +5,7 @@ on:
     branches: [master]
     paths:
       - 'docs/GEN789_STRUCTURAL_LADDER_RC1.md'
+      - 'docs/MPRC_CANONICAL_MATH_LEDGER.md'
       - 'scripts/gen789_structural_ladder_gate.py'
       - '.github/workflows/gen789-ladder-rc1.yml'
   workflow_dispatch:
