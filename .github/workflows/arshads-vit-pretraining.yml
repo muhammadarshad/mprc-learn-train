@@ -4,6 +4,10 @@ on:
   push:
     branches: [master]
     paths:
+      - 'src/mprc_structural/manifold.py'
+      - 'src/mprc_structural/attention.py'
+      - 'src/mprc_structural/typed_attention.py'
+      - 'src/mprc_structural/block_local112.py'
       - 'src/mprc_structural/qh4.py'
       - 'src/mprc_structural/directional_adi.py'
       - 'src/mprc_structural/qh4_mixed.py'
@@ -16,6 +20,8 @@ on:
       - 'gates/gate_directional_vs_paper3_transpose.py'
       - 'gates/gate_native_hv_gevhv_equivariance.py'
       - 'gates/gate_arshads_vit_pretraining.py'
+      - 'docs/ARSHADS_VIT_SPEC_EXTRACT.md'
+      - 'docs/ARSHADS_VIT_RECOVERY_AUDIT.md'
       - 'tests/test_directional_qh4.py'
       - 'tests/test_qh4_mixed_transpose.py'
       - '.github/workflows/arshads-vit-pretraining.yml'
