@@ -1,0 +1,27 @@
+name: Occurrence SELECT survival
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'src/mprc_structural/occurrence_select.py'
+      - 'gates/gate_occurrence_select.py'
+      - '.github/workflows/occurrence-select-survival.yml'
+  workflow_dispatch:
+
+jobs:
+  survival:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy
+      - run: PYTHONPATH=src python gates/gate_occurrence_select.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: occurrence-select-survival
+          path: results/occurrence_select_survival.json
+          retention-days: 90
