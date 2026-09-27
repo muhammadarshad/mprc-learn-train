@@ -1,21 +1,21 @@
-"""Canonical Arshad-ViT storage view.
+"""OPTIONAL physical packing/accounting utility — NOT the canonical ViT manifold.
 
-The 128 x 113 geometry is a BIT manifold, not 14,464 independent byte states.
+This module was introduced while correcting a byte-vs-pixel/storage-accounting
+mistake.  Its 128x113 bit packing view MUST NOT be used to redefine the frozen
+Arshad-ViT computational manifold or its operators.
 
-    128 * 113 = 14,464 bits
-              = 1,808 bytes
-              = 16 byte channels * 113 samples
+Frozen ViT computation remains:
+    computational manifold : 128 x 113 Z256 state/address slots
+    execution              : two 64 x 113 slabs
+    transport              : q_t = q_0 + 7*t (mod 64)
+    attention              : IDENTIFY -> BIND -> REACT -> MEASURE
 
-Canonical byte view:
-    bytes16x113[c, s] in Z256
+The helpers below only show that an unrelated 16x113 byte buffer can be packed
+into 128x113 physical bits.  They are useful for storage/accounting experiments,
+not as a replacement execution geometry.
 
-Canonical storage view:
-    bits128x113[8*c + b, s] in {0,1}
-
-where b=0..7 is the little-endian bit index of one Z256 byte.
-
-This module separates STORAGE from computational/source information counts.
-It does not claim that all 16 channels are independent source pixels.
+Do not import this module from canonical attention, routing, REACT, SELECT, or
+training code.
 """
 from __future__ import annotations
 import numpy as np
