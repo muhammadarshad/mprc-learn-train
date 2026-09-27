@@ -1,0 +1,25 @@
+name: CIFAR corrected byte-state stream audit
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/cifar_corrected_byte_stream.py'
+      - '.github/workflows/cifar-corrected-byte-stream.yml'
+  workflow_dispatch:
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install numpy
+      - run: PYTHONPATH=src python gates/gate_bit_manifold.py
+      - run: PYTHONPATH=src python gates/gate_byte_attention.py
+      - run: PYTHONPATH=src python scripts/cifar_corrected_byte_stream.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cifar-corrected-byte-stream
+          path: results/cifar_corrected_byte_stream.json
+          retention-days: 90
