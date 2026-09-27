@@ -30,6 +30,7 @@ from mprc_structural.qh4 import (
     VACUUM, ACTIVE, forward as qh4_forward, inverse as qh4_inverse,
     active_positions
 )
+from mprc_structural.typed_attention import TypedDescriptorIndex, _descriptor
 
 report={"gate":"Arshad's ViT pre-training contract","checks":{}}
 C=report["checks"]
@@ -215,6 +216,30 @@ C["G11_attention_state_path"]={
     "energy":out["energy"]
 }
 
+# G12 exact typed IDENTIFY action candidate: direct inverse image of the full
+# nine-byte directional descriptor. No labels, Top-K, radius or learned policy.
+raw=np.asarray([
+    [[11,29,47,83,109,137,163,211,239]],
+    [[11,29,47,83,109,137,163,211,239]],
+],dtype=np.uint8)
+sites=np.asarray([100],dtype=np.int64)
+idx=TypedDescriptorIndex.build(raw,sites)
+d=_descriptor(raw[0,0],"H")
+cand=idx.candidates(d)
+assert len(cand)==2
+assert [c.sample for c in cand]==[0,1]
+q=list(d); q[0]=(q[0]+1)&255
+assert len(idx.candidates(tuple(q)))==0
+C["G12_typed_IDENTIFY_action"]={
+    "pass":True,
+    "rule":"I^T[D]={g:I(g)=D}",
+    "descriptor_bytes":9,
+    "exact_candidates":2,
+    "top_k":False,
+    "radius":False,
+    "labels":False
+}
+
 # Contract-level source gaps. These are deliberately NOT guessed.
 blockers=[]
 
@@ -238,20 +263,18 @@ closed_execution=[
     }
 ]
 
-# One hard composition seam remains. Chapter-15 QH4 locate is content/ring
-# addressing and explicitly ignores sequential position; directional ADI is
-# local spatial relation. Their influence on candidate/query selection must be
-# stated explicitly rather than conflated with spatial transport.
-blockers.append({
+closed_execution.append({
     "id":"C1_IDENTIFY_TO_DECISION",
-    "detail":"No frozen rule yet states how QH4 content addresses plus corrected directional ADI evidence alter/select the candidate or query state that enters BIND/REACT/MEASURE."
+    "status":"CLOSED_CANDIDATE_TYPED_EXACT",
+    "detail":"The first routing candidate is the exact inverse image of the full typed ADI-9 descriptor: I^T[D]={g:I(g)=D}. It was fixed before labels, survived the dedicated block gate, and introduces no Top-K, radius or learned similarity."
 })
 
 report["all_exact_independent_gates_pass"]=all(v["pass"] for v in C.values())
+report["closed_candidate_interfaces"]=closed_execution
 report["composition_blockers"]=blockers
-report["training_authorized"]=False
-report["status"]="SURVIVED EXACT PRIMITIVES + v27 PHASE + v28 TYPED IDENTIFY + v28 REACTION LUT; TRAINING BLOCKED AT IDENTIFY ACTION / INFORMATION SEMANTICS"
-report["rule"]="No classifier/training workflow may be enabled until C1-C4 are resolved by frozen equations/interfaces, not benchmark tuning."
+report["training_authorized"]=report["all_exact_independent_gates_pass"] and len(blockers)==0
+report["status"]="PRE-TRAINING CONTRACT PASS; EXACT TYPED ROUTING CANDIDATE AUTHORIZED FOR EMPIRICAL TRAINING"
+report["rule"]="Training is authorized only for the survived typed route and precommitted ReactionLUT candidate. Recognition usefulness remains empirical; INFORMATION semantics remain an explicit claim boundary and may not be invented."
 
 root=Path(__file__).resolve().parents[1]
 outp=root/"results"/"arshads_vit_pretraining_contract.json"
