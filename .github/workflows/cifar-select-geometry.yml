@@ -1,0 +1,26 @@
+name: CIFAR MPRC expanding-context SELECT audit
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'gates/gate_cifar_select_geometry.py'
+      - '.github/workflows/cifar-select-geometry.yml'
+  workflow_dispatch:
+
+jobs:
+  cifar-select-geometry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy
+      - run: python gates/gate_cifar_select_geometry.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cifar-select-geometry
+          path: results/cifar_select_geometry.json
+          retention-days: 90
