@@ -113,18 +113,15 @@ def vit_features(imgs):
     F=fields(imgs)
     out=[]
     for a in F:
-        # one byte summary per anchor derived from eight bitplane joint 1+8 patterns
-        anchor=np.zeros((len(a),113),dtype=np.uint8)
+        per_bit=[]
         for bit in range(8):
             z=((a>>bit)&1).astype(np.uint8)
             state=z[:,AR,AC].astype(np.uint16)
             for k,(dr,dc) in enumerate(NEIGH,1):
                 state |= z[:,AR+dr,AC+dc].astype(np.uint16)<<k
-            # fold each 9-bit local state to one byte while preserving low 8 ring bits;
-            # high bit contributes generator displacement 7.
-            anchor=(anchor + ((state&255).astype(np.uint8)) + (((state>>8)&1).astype(np.uint8)*7))&255
-        out.append(anchor.astype(np.uint8))
-    return np.concatenate(out,axis=1) # [N,1808]
+            per_bit.append(state.astype(np.uint16))
+        out.append(np.stack(per_bit,axis=1))  # [N,8,113], states 0..511
+    return np.concatenate(out,axis=1).reshape(len(imgs),-1) # [N,16*8*113] uint16
 
 # ---------------- B: spectral control ----------------
 def smooth_steps(a,steps):
@@ -195,8 +192,12 @@ def spectral_features(imgs):
     return np.concatenate(allbands,axis=1) # 896
 
 def ringdist(mem,q):
-    d=np.abs(mem.astype(np.int16)-q.astype(np.int16)[None,:])
-    d=np.minimum(d,256-d)
+    # A uses 9-bit local states 0..511, B uses Z256 features.
+    # Use circular distance on the natural state domain inferred from dtype/range.
+    m=mem.astype(np.int32);qq=q.astype(np.int32)[None,:]
+    mod=512 if int(max(mem.max(),q.max()))>255 else 256
+    d=np.abs(m-qq)
+    d=np.minimum(d,mod-d)
     return d.sum(axis=1,dtype=np.int64)
 
 def eval_branch(trainF,trainY,testF,testY):
