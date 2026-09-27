@@ -1,0 +1,27 @@
+name: CIFAR RGB frame survival
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'src/mprc_structural/cifar_frame.py'
+      - 'gates/gate_cifar_frame.py'
+      - '.github/workflows/cifar-frame-survival.yml'
+  workflow_dispatch:
+
+jobs:
+  survival:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy
+      - run: PYTHONPATH=src python gates/gate_cifar_frame.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cifar-frame-survival
+          path: results/cifar_frame_survival.json
+          retention-days: 90
