@@ -1,0 +1,27 @@
+name: Typed ArshadBlock survival
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'src/mprc_structural/typed_attention.py'
+      - 'gates/gate_typed_arshad_block.py'
+      - '.github/workflows/typed-arshad-block-survival.yml'
+  workflow_dispatch:
+
+jobs:
+  survival:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy
+      - run: PYTHONPATH=src python gates/gate_typed_arshad_block.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: typed-arshad-block-survival
+          path: results/typed_arshad_block_survival.json
+          retention-days: 90
