@@ -1,0 +1,24 @@
+name: CIFAR A1 full900 evidence accumulation
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/cifar_a1_full900_evidence.py'
+      - '.github/workflows/cifar-a1-full900.yml'
+  workflow_dispatch:
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install numpy
+      - run: PYTHONPATH=src python gates/gate_bit_manifold.py
+      - run: PYTHONPATH=src python scripts/cifar_a1_full900_evidence.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cifar-a1-full900
+          path: results/cifar_a1_full900_evidence.json
+          retention-days: 90
