@@ -1,4 +1,4 @@
-"""Corrected MPRC attention over the DATA + INFORMATION manifold.
+"""Canonical MPRC attention over the frozen DATA + INFORMATION manifold.
 
 This module is deliberately a reference implementation for the corrected topology.
 
