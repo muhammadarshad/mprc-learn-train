@@ -110,7 +110,7 @@ def fit_local(F,y_all,fit_idx):
    p=patterns(a,bit)
    cnt=np.zeros((512,10),dtype=np.int64)
    for c in range(10):
-    vals=p[yfit==c].reshape(-1)
+    vals=p[y_all[fit_idx]==c].reshape(-1)
     cnt[:,c]=np.bincount(vals,minlength=512)
    total=cnt.sum(1,keepdims=True)
    # integer centered evidence; no log/float model state
@@ -138,7 +138,7 @@ def fit_global(F,y_all,fit_idx):
   # 16 ring bins from high nibble; class evidence.
   cnt=np.zeros((16,10),dtype=np.int64)
   for c in range(10):
-   vals=(a[yfit==c]>>4).reshape(-1)
+   vals=(a[y_all[fit_idx]==c]>>4).reshape(-1)
    cnt[:,c]=np.bincount(vals,minlength=16)
   out[name]=(10*cnt-cnt.sum(1,keepdims=True)).astype(np.int32)
  return out
