@@ -1,0 +1,24 @@
+name: CIFAR few image semantic trace
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/cifar_few_image_semantic_trace.py'
+      - '.github/workflows/cifar-few-image-semantic-trace.yml'
+  workflow_dispatch:
+jobs:
+  trace:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install numpy
+      - run: PYTHONPATH=src python gates/gate_arshads_vit_pretraining.py
+      - run: PYTHONPATH=src python scripts/cifar_few_image_semantic_trace.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cifar-few-image-semantic-trace
+          path: results/cifar_few_image_semantic_trace.json
+          retention-days: 90
