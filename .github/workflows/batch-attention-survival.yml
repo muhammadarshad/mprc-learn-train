@@ -1,0 +1,27 @@
+name: Batch attention survival
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'src/mprc_structural/batch_attention.py'
+      - 'gates/gate_batch_attention.py'
+      - '.github/workflows/batch-attention-survival.yml'
+  workflow_dispatch:
+
+jobs:
+  survival:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy
+      - run: PYTHONPATH=src python gates/gate_batch_attention.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: batch-attention-survival
+          path: results/batch_attention_survival.json
+          retention-days: 90
