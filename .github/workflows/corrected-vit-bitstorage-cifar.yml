@@ -1,0 +1,28 @@
+name: Corrected ViT bit storage + CIFAR source-pixel audit
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'src/mprc_structural/bit_manifold.py'
+      - 'gates/gate_bit_manifold.py'
+      - 'scripts/cifar_bitstorage_pixel_audit.py'
+      - '.github/workflows/corrected-vit-bitstorage-cifar.yml'
+  workflow_dispatch:
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install numpy
+      - run: PYTHONPATH=src python gates/gate_bit_manifold.py
+      - run: PYTHONPATH=src python scripts/cifar_bitstorage_pixel_audit.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: corrected-vit-bitstorage-cifar
+          path: |
+            results/bit_manifold_survival.json
+            results/cifar_bitstorage_pixel_audit.json
+          retention-days: 90
