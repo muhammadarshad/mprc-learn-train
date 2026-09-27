@@ -1,0 +1,41 @@
+name: MPRC CIFAR RGB post-survival training
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/mprc_cifar_rgb_postsurvival_v0.py'
+      - '.github/workflows/mprc-cifar-rgb-postsurvival-v0.yml'
+  workflow_dispatch:
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy
+      - name: Parent pre-training contract
+        run: PYTHONPATH=src python gates/gate_arshads_vit_pretraining.py
+      - name: Typed ArshadBlock survival
+        run: PYTHONPATH=src python gates/gate_typed_arshad_block.py
+      - name: Displacement-compatible SELECT survival
+        run: PYTHONPATH=src python gates/gate_occurrence_select.py
+      - name: CIFAR framing survival
+        run: PYTHONPATH=src python gates/gate_cifar_frame.py
+      - name: Batch attention parity
+        run: PYTHONPATH=src python gates/gate_batch_attention.py
+      - name: ReactionLUT survival
+        run: PYTHONPATH=src python gates/gate_v28_reaction_lut.py
+      - name: Train and evaluate
+        run: PYTHONPATH=src python scripts/mprc_cifar_rgb_postsurvival_v0.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mprc-cifar-rgb-postsurvival-v0
+          path: |
+            results/mprc_cifar_rgb_postsurvival_v0.json
+            results/mprc_cifar_rgb_postsurvival_v0_lut.npy
+          retention-days: 90
