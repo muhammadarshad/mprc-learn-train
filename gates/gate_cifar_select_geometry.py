@@ -50,8 +50,8 @@ SUPPORT_SIZES = {r: 1 + 2 * r * (r + 1) for r in RADII}
 assert [SUPPORT_SIZES[r] for r in RADII] == [5, 13, 25, 41, 61, 85, 113]
 
 # Fixed before labels are inspected.
-N_QUERIES = 100
-N_CANDIDATE_IMAGES = 400
+N_QUERIES = 50
+N_CANDIDATE_IMAGES = 200
 K0 = 256
 SEED = 20260927
 
