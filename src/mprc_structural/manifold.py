@@ -1,7 +1,6 @@
-"""Canonical MPRC DATA + INFORMATION manifold.
+"""Canonical MPRC DATA + INFORMATION computational manifold.
 
-This module implements the corrected byte/state construction:
-
+Frozen algebra:
     D = 256
     N = sqrt(D) - 1 = 15
     GEN = sqrt(D)/2 - 1 = 7
@@ -10,14 +9,17 @@ This module implements the corrected byte/state construction:
     W_INFO = N = 15
     W = 113
 
-    DATA = 128*98 = 12,544 bytes
-    INFORMATION = 128*15 = 1,920 bytes
-    MANIFOLD = 128*113 = 14,464 bytes
+    DATA STATES        = 128*98  = 12,544
+    INFORMATION STATES = 128*15  = 1,920
+    MANIFOLD STATES    = 128*113 = 14,464
 
-The manifold is NOT an image geometry. DATA bytes are modality-agnostic payload.
-INFORMATION bytes are structural information, not padding.
+These are computational Z256 state/address slots in the frozen ViT algebra.
+They are NOT a claim about source-image pixel count or physical packed storage
+capacity.  Source pixels, materialized computational arrays, and physical
+storage accounting must be reported separately.
 
-Execution uses two 64x113 slabs so one 7,232-byte slab can remain cache-resident.
+Execution remains two 64x113 slabs with generator-7 transport on Z64.
+No 16x113/Z16 execution reinterpretation is canonical.
 """
 
 from __future__ import annotations
@@ -38,23 +40,33 @@ DATA_W = 2 * GEN * GEN           # 98
 INFO_W = N                       # 15
 W = DATA_W + INFO_W              # 113
 
-DATA_BYTES = H * DATA_W          # 12,544
-INFO_BYTES = H * INFO_W          # 1,920
-MANIFOLD_BYTES = H * W           # 14,464
+DATA_STATES = H * DATA_W         # 12,544
+INFO_STATES = H * INFO_W         # 1,920
+MANIFOLD_STATES = H * W          # 14,464
 
 TILE_H = 64
 SLAB_COUNT = H // TILE_H         # 2
-SLAB_BYTES = TILE_H * W          # 7,232
-SLAB_DATA_BYTES = TILE_H * DATA_W  # 6,272
-SLAB_INFO_BYTES = TILE_H * INFO_W  # 960
+SLAB_STATES = TILE_H * W         # 7,232
+SLAB_DATA_STATES = TILE_H * DATA_W  # 6,272
+SLAB_INFO_STATES = TILE_H * INFO_W  # 960
 
 # Independent closure identities.
 assert GEN * GEN + N == D // 4 == 64
-assert DATA_BYTES == 49 * 256 == 98 * 128
-assert INFO_BYTES == 15 * 128
-assert MANIFOLD_BYTES == DATA_BYTES + INFO_BYTES == 113 * 128
+assert DATA_STATES == 49 * 256 == 98 * 128
+assert INFO_STATES == 15 * 128
+assert MANIFOLD_STATES == DATA_STATES + INFO_STATES == 113 * 128
 assert H == 2 * TILE_H
 assert SLAB_COUNT == 2
+
+# Backward-compatibility aliases for older experiments/tests.  The names are
+# retained only to avoid breaking code; semantically these count materialized
+# computational Z256 state slots, not packed physical bytes.
+DATA_BYTES = DATA_STATES
+INFO_BYTES = INFO_STATES
+MANIFOLD_BYTES = MANIFOLD_STATES
+SLAB_BYTES = SLAB_STATES
+SLAB_DATA_BYTES = SLAB_DATA_STATES
+SLAB_INFO_BYTES = SLAB_INFO_STATES
 
 
 @dataclass(frozen=True)
@@ -62,10 +74,10 @@ class ManifoldState:
     """Modality-agnostic payload for the canonical manifold.
 
     data:
-        Flat uint8 vector of exactly 12,544 DATA bytes.
+        Flat uint8 vector of exactly 12,544 materialized DATA states.
 
     information:
-        Flat uint8 vector of exactly 1,920 INFORMATION bytes.
+        Flat uint8 vector of exactly 1,920 materialized INFORMATION states.
 
     No pixel, image, channel-row, or polarity-column semantics are imposed.
     """
@@ -139,9 +151,12 @@ def layout_counts() -> dict[str, int]:
         "data_width": DATA_W,
         "information_width": INFO_W,
         "W": W,
-        "data": DATA_BYTES,
-        "information": INFO_BYTES,
-        "manifold_total": MANIFOLD_BYTES,
+        "data_states": DATA_STATES,
+        "data": DATA_STATES,
+        "information_states": INFO_STATES,
+        "information": INFO_STATES,
+        "manifold_states": MANIFOLD_STATES,
+        "manifold_total": MANIFOLD_STATES,
         "slab_count": SLAB_COUNT,
         "slab_bytes": SLAB_BYTES,
         "slab_data_bytes": SLAB_DATA_BYTES,
