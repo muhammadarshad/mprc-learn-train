@@ -166,7 +166,7 @@ for qi in range(10):
       "S1_16CH":metrics(o1,ML,truth,e1),
       "S2_ADI9":metrics(o2,ML,truth,e2),
       "S3_IDENTIFY":metrics(o3,ML,truth,e2),
-      "S4_ATTN_TOP32":metrics(att_order,ML[att_order],truth,ea),
+      "S4_ATTN_TOP32":metrics(oa,ML[top],truth,ea),
       "identify":{"top_pattern_matches":int(pm[o3[0]]),"best_same_pattern_matches":int(pm[ML==truth].max()),"best_wrong_pattern_matches":int(pm[ML!=truth].max())},
       "encoder_contribution_best_same":{CHANNEL_NAMES[k]:int(per1[bs,k]) for k in range(16)},
       "encoder_contribution_best_wrong":{CHANNEL_NAMES[k]:int(per1[bw,k]) for k in range(16)},
