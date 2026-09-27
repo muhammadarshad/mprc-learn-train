@@ -102,7 +102,7 @@ def patterns(a,bit):
  return s
 
 # shared categorical local model: [16,8,512,10] class evidence
-def fit_local(F,yfit):
+def fit_local(F,y_all,fit_idx):
  tables=np.zeros((16,8,512,10),dtype=np.int32)
  for ci,name in enumerate(CHANNEL_NAMES):
   a=F[name]
@@ -131,7 +131,7 @@ def score_local(F,tables,ids):
  return S
 
 # lightweight global raw-byte histograms to preserve coarse colour/field distribution.
-def fit_global(F,yfit):
+def fit_global(F,y_all,fit_idx):
  out={}
  for ci,name in enumerate(CHANNEL_NAMES):
   a=F[name]
@@ -152,7 +152,7 @@ def acc(S,y):return float(np.mean(S.argmax(1)==y))
 
 t0=time.time()
 tx,ty,vx,vy=load();fit,val,shadow=tuple(split(ty));TF=fields(tx);VF=fields(vx)
-lt=fit_local(TF,ty[fit]);gt=fit_global(TF,ty[fit])
+lt=fit_local(TF,ty,fit);gt=fit_global(TF,ty,fit)
 VL=score_local(TF,lt,val);SL=score_local(TF,lt,shadow);TL=score_local(VF,lt,np.arange(len(vx)))
 VG=score_global(TF,gt,val);SG=score_global(TF,gt,shadow);TG=score_global(VF,gt,np.arange(len(vx)))
 
