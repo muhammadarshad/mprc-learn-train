@@ -1,0 +1,27 @@
+name: Typed SELECT index survival
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'src/mprc_structural/typed_select_index.py'
+      - 'gates/gate_typed_select_index.py'
+      - '.github/workflows/typed-select-index-survival.yml'
+  workflow_dispatch:
+
+jobs:
+  survival:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy
+      - run: PYTHONPATH=src python gates/gate_typed_select_index.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: typed-select-index-survival
+          path: results/typed_select_index_survival.json
+          retention-days: 90
