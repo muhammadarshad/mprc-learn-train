@@ -1,0 +1,19 @@
+name: Coherent displacement SELECT survival
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'src/mprc_structural/coherent_displacement_select.py'
+      - 'gates/gate_coherent_displacement_select.py'
+      - '.github/workflows/coherent-displacement-select.yml'
+  workflow_dispatch:
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install numpy
+      - run: PYTHONPATH=src python gates/gate_coherent_displacement_select.py
