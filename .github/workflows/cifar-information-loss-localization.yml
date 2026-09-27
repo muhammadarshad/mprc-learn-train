@@ -1,0 +1,24 @@
+name: CIFAR information loss localization
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/cifar_information_loss_localization.py'
+      - '.github/workflows/cifar-information-loss-localization.yml'
+  workflow_dispatch:
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install numpy
+      - run: PYTHONPATH=src python gates/gate_arshads_vit_pretraining.py
+      - run: PYTHONPATH=src python scripts/cifar_information_loss_localization.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cifar-information-loss-localization
+          path: results/cifar_information_loss_localization.json
+          retention-days: 90
