@@ -1,0 +1,30 @@
+name: CIFAR coherent displacement SELECT
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/cifar_coherent_displacement_select.py'
+      - '.github/workflows/cifar-coherent-displacement-select.yml'
+  workflow_dispatch:
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install numpy
+      - name: Frozen ViT pretraining contract
+        run: PYTHONPATH=src python gates/gate_arshads_vit_pretraining.py
+      - name: Coherent displacement SELECT gate
+        run: PYTHONPATH=src python gates/gate_coherent_displacement_select.py
+      - name: Batch attention parity
+        run: PYTHONPATH=src python gates/gate_batch_attention.py
+      - name: Run CIFAR decision gate
+        run: PYTHONPATH=src python scripts/cifar_coherent_displacement_select.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cifar-coherent-displacement-select
+          path: results/cifar_coherent_displacement_select.json
+          retention-days: 90
