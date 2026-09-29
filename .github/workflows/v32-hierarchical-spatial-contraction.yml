@@ -1,0 +1,26 @@
+name: v32 hierarchical spatial contraction
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/v32_hierarchical_spatial_contraction.py'
+      - '.github/workflows/v32-hierarchical-spatial-contraction.yml'
+  workflow_dispatch:
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install numpy
+      - name: Frozen ViT contract
+        run: PYTHONPATH=src python gates/gate_arshads_vit_pretraining.py
+      - name: Hierarchical contraction audit
+        run: PYTHONPATH=src python scripts/v32_hierarchical_spatial_contraction.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v32-hierarchical-spatial-contraction
+          path: results/v32_hierarchical_spatial_contraction.json
+          retention-days: 90
