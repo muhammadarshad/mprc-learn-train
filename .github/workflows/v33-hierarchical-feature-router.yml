@@ -1,0 +1,26 @@
+name: v33 hierarchical feature router
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/v33_hierarchical_feature_router.py'
+      - '.github/workflows/v33-hierarchical-feature-router.yml'
+  workflow_dispatch:
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install numpy
+      - name: Frozen ViT contract
+        run: PYTHONPATH=src python gates/gate_arshads_vit_pretraining.py
+      - name: Label-free router audit
+        run: PYTHONPATH=src python scripts/v33_hierarchical_feature_router.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v33-hierarchical-feature-router
+          path: results/v33_hierarchical_feature_router.json
+          retention-days: 90
