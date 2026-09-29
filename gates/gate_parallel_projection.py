@@ -28,12 +28,16 @@ for order in itertools.permutations(DIRECTIONS):
 # G3: branches really differ, proving they are directional rather than aliases.
 assert any(not np.array_equal(base["proposals"][DIRECTIONS[0]],base["proposals"][d]) for d in DIRECTIONS[1:])
 
-# G4: every accepted mutation has at least one branch proposing mutation.
+# G4: this diagnostic must actually resolve at least one site; a no-op vote
+# must never be allowed to produce a false-green synchrony gate.
+assert bool(base["mutated"].any())
+
+# G5: every accepted mutation has at least one branch proposing mutation.
 for i,m in enumerate(base["mutated"]):
     if m:
         assert any(base["proposals"][d][i]!=x[i] for d in DIRECTIONS)
 
-# G5: directional one-step resolver never increases local context distance.
+# G6: directional one-step resolver never increases local context distance.
 for a in range(256):
     for b in range(256):
         z=toward(a,b)
