@@ -1,0 +1,26 @@
+name: v34 observe bucket reveal
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'scripts/v34_observe_bucket_reveal.py'
+      - '.github/workflows/v34-observe-bucket-reveal.yml'
+  workflow_dispatch:
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: pip install numpy
+      - name: Frozen ViT contract
+        run: PYTHONPATH=src python gates/gate_arshads_vit_pretraining.py
+      - name: Observe bucket reveal
+        run: PYTHONPATH=src python scripts/v34_observe_bucket_reveal.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v34-observe-bucket-reveal
+          path: results/v34_observe_bucket_reveal.json
+          retention-days: 90
