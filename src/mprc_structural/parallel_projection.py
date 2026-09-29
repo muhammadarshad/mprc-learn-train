@@ -90,18 +90,50 @@ def project_direction(snapshot:np.ndarray,direction:str,resolver:Resolver=pair_r
         work[i]=int(resolver(int(work[i]),int(work[prev])))&255
     return ProjectionResult(direction,work,work!=x)
 
-def vote(snapshot:np.ndarray,proposals:dict[str,np.ndarray])->tuple[np.ndarray,np.ndarray]:
+def vote(
+    snapshot:np.ndarray,
+    proposals:dict[str,np.ndarray],
+    branch_mutations:dict[str,np.ndarray],
+)->tuple[np.ndarray,np.ndarray]:
+    """Resolve only among branches that actually proposed mutation.
+
+    KEEP is not a vote against mutation. If no branch proposes a mutation,
+    preserve the incumbent. If one or more branches propose, reconcile only
+    those proposed states. This matches the synchronous rule:
+        observe in parallel -> collect mutations -> vote -> update once.
+    """
     x=np.asarray(snapshot)
-    if set(proposals)!=set(DIRECTIONS): raise ValueError("need all four directions")
+    if set(proposals)!=set(DIRECTIONS) or set(branch_mutations)!=set(DIRECTIONS):
+        raise ValueError("need all four directions")
     out=x.copy();changed=np.zeros(len(x),dtype=np.bool_)
     for i in range(len(x)):
-        vals=[int(proposals[d][i]) for d in DIRECTIONS]
-        # No mutation proposal => preserve exact incumbent.
-        if all(v==int(x[i]) for v in vals):
+        vals=[
+            int(proposals[d][i])
+            for d in DIRECTIONS
+            if bool(branch_mutations[d][i])
+        ]
+        if not vals:
             continue
-        z=ring_medoid(vals,int(x[i]))
+
+        # Exact plurality first.
+        uniq=sorted(set(vals))
+        counts={v:vals.count(v) for v in uniq}
+        max_count=max(counts.values())
+        tied=[v for v in uniq if counts[v]==max_count]
+
+        if len(tied)==1:
+            z=tied[0]
+        else:
+            # Tie: choose the proposal minimizing circular distance to the
+            # other mutation proposals. Incumbent is NOT a candidate.
+            scored=[
+                (sum(cdist(c,v) for v in vals), cdist(c,int(x[i])), c)
+                for c in tied
+            ]
+            z=min(scored)[2]
+
         out[i]=z
-        changed[i]=(z!=x[i])
+        changed[i]=(z!=int(x[i]))
     return out,changed
 
 def parallel_resolve(snapshot:np.ndarray,resolver:Resolver=pair_resolver,execution_order=None)->dict:
@@ -123,7 +155,7 @@ def parallel_resolve(snapshot:np.ndarray,resolver:Resolver=pair_resolver,executi
         proposals[d]=r.proposal
         branch_mutations[d]=r.mutated
 
-    nxt,mut=vote(x,proposals)
+    nxt,mut=vote(x,proposals,branch_mutations)
     return {
         "snapshot":x.copy(),
         "proposals":{d:proposals[d] for d in DIRECTIONS},
